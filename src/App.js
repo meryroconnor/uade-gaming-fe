@@ -4,6 +4,8 @@ import Navbar from './components/Navbar';
 import Hero from './components/homepage/Hero';
 import SearchBar from './components/homepage/SearchBar';
 import Footer from './components/Footer';
+import IconsNavbar from './components/homepage/IconsNavbar';
+
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
         <Navbar />
         <Hero />
         <SearchBar />
+        <IconsNavbar />
+
         <Footer />
 
       </div>
