@@ -8,12 +8,14 @@ import './App.css';
 import Carousel from './components/homepage/Carousel';
 import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
 
+import Login from './pages/Login'
+
 function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar />
-        <div className="content-wrapper">
+        {/* <Navbar /> */}
+        {/* <div className="content-wrapper">
           <Hero />
           <div className="search-nav-wrapper">
             <SearchBar />
@@ -21,8 +23,11 @@ function App() {
           </div>
           <Carousel />
           <ImagesPlaceholder />
-        </div>
+        </div> */}
+        <Login />
       </div>
+
+
     </Router>
   );
 }
