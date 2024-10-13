@@ -5,6 +5,7 @@ import Hero from './components/homepage/Hero';
 import SearchBar from './components/homepage/SearchBar';
 import Footer from './components/Footer';
 import IconsNavbar from './components/homepage/IconsNavbar';
+import Testimonials from './components/homepage/Testimonials';
 
 
 function App() {
@@ -15,6 +16,8 @@ function App() {
         <Hero />
         <SearchBar />
         <IconsNavbar />
+
+        <Testimonials />
 
         <Footer />
 
