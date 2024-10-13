@@ -1,0 +1,36 @@
+.navigationIcons-icons {
+    display: flex;
+    justify-content: center;
+    margin: auto auto;
+    gap: 2rem;
+    padding: 5rem 0;
+  }
+  
+  .navigationIcons-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    transition: color 0.2s ease;
+  }
+  
+  .navigationIcons-icon:hover,
+  .navigationIcons-icon.hovered {
+    color: #B9FF66;
+  }
+  
+  .navigationIcons-icon.active {
+    color: #B9FF66;
+    font-weight: bold;
+  }
+  
+  .navigationIcons-icon {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 4px;
+  }
+  
+  .icon-label {
+    font-size: 0.875rem;
+  }
