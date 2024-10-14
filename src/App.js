@@ -8,7 +8,8 @@ import './App.css';
 import Carousel from './components/homepage/Carousel';
 import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
 
-import Login from './pages/Login'
+import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
   return (
