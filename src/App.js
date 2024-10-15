@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Hero from './components/homepage/Hero';
 import SearchBar from './components/homepage/SearchBar';
-import NavigationIcons from './components/hompage/NavigationIcons';
+import NavigationIcons from './components/homepage/NavigationIcons';
 import './App.css';
 import Carousel from './components/homepage/Carousel';
 import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
