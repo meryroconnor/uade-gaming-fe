@@ -1,0 +1,94 @@
+.body-container {
+    background-color: black;
+    padding-bottom: 3rem;
+    
+}
+
+.testimonial-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2e2e2e;
+    border-radius: 8px;
+    text-align: center;
+    color: #fff;
+    width: 90%;    
+}
+
+
+h2{
+    text-align: center;
+    width: 280px;
+    margin: auto;
+}
+
+.subtitle{
+    text-align: center;
+    width: 400px;
+    margin: 15px auto;
+}
+
+.testimonial-carousel {
+    position: relative;
+    text-align: center;
+}
+
+.carousel-content {
+    display: flex;
+    gap: 15px;
+    overflow: hidden;
+}
+
+.testimonial-item {
+    background: #333;
+    border-radius: 8px;
+    padding: 10px;
+    flex: 1;
+    transition: transform 0.3s ease-in-out;
+    min-width: 15%;
+    min-height: 180px;
+}
+
+
+.testimonial-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.name-rating {    
+    display: flex;    
+    align-items: center;
+    gap: 20px;
+    justify-content: space-around;
+}
+
+.testimonial-text {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+.carousel-controls {
+    display: flex;
+    justify-content: right;
+    margin-top: 20px;
+}
+
+.carousel-controls button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+.carousel-controls button:hover {
+    color: #f90;
+}

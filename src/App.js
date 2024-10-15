@@ -2,12 +2,12 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Hero from './components/hompage/Hero';
-import SearchBar from './components/hompage/SearchBar';
+import Hero from './components/homepage/Hero';
+import SearchBar from './components/homepage/SearchBar';
 import NavigationIcons from './components/hompage/NavigationIcons';
 import './App.css';
-import Carousel from './components/hompage/Carousel';
-import ImagesPlaceholder from './components/hompage/ImagesPlaceholder';
+import Carousel from './components/homepage/Carousel';
+import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
 
 function App() {
   return (
