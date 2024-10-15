@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Hero from './components/hompage/Hero';
 import SearchBar from './components/hompage/SearchBar';
 import NavigationIcons from './components/hompage/NavigationIcons';
@@ -22,6 +23,7 @@ function App() {
           <Carousel />
           <ImagesPlaceholder />
         </div>
+        <Footer />
       </div>
     </Router>
   );
