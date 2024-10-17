@@ -13,27 +13,18 @@ import Register from './pages/Register';
 import Game from './components/Game';
 import FilterMenu from './components/FilterMenu';
 import PurchaseTotal from './components/PurchaseTotal';
+import useModal from './useModal';
 
 function App() {
+
+  const { isOpen, openModal, closeModal } = useModal();
+
   return (
     <Router>
       <div className="App">
-        <Navbar />
-        {/* <div className="content-wrapper">
-          <Hero />
-          <div className="search-nav-wrapper">
-            <SearchBar />
-            <NavigationIcons />
-          </div>
-          <Carousel />
-          <ImagesPlaceholder />
-        </div> */}
-        {/* <Login />
-        <Register /> */}
-
-        <PurchaseTotal />
-
-        
+      <Navbar openModal={openModal} /> {/* Pass openModal as a prop */}
+      <Register isOpen={isOpen} onClose={closeModal} />
+      <Hero />
       </div>
 
 

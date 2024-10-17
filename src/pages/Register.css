@@ -1,10 +1,31 @@
-.registrationWrapper {
+.modal{
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  z-index: 1000; 
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); 
+  backdrop-filter: blur(10px); 
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: black;
+  z-index: 1000; 
 }
+
 
 .registrationContainer {
   background-color: #2d0130;
@@ -12,7 +33,9 @@
   overflow: hidden;
   display: flex;
   width: 800px;
+  z-index: 1000; 
 }
+
 
 .formSection {
   flex: 1;

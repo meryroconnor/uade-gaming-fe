@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './Register.css';
 
-const RegistrationComponent = () => {
+const RegistrationComponent = ({ isOpen, onClose }) => {
   const [activeForm, setActiveForm] = useState('user');
 
+  if (!isOpen) return null;
 
   return (
-    <div className="registrationWrapper">
+    <div className="modal">
+      <div className="overlay"></div>
       <div className="registrationContainer">
         <div
           className={`formSection ${activeForm === 'user' ? 'active' : 'inactiveUser'}`}
@@ -27,8 +29,10 @@ const RegistrationComponent = () => {
           className={`formSection ${activeForm === 'store' ? 'activeStore' : 'inactiveStore'}`}
           onClick={() => setActiveForm('store')}
         >
-          <h2 className="formTitle" style={{ color: activeForm === 'store' ? '#1c0020' : '#cccccc',
-        borderBottom: activeForm === 'store' ? '2px solid #1c0020' : '2px solid #cccccc' }}>Store Registration</h2>
+          <h2 className="formTitle" style={{
+            color: activeForm === 'store' ? '#1c0020' : '#cccccc',
+            borderBottom: activeForm === 'store' ? '2px solid #1c0020' : '2px solid #cccccc'
+          }}>Store Registration</h2>
           <form className="form">
             <input type="text" placeholder="Store name" />
             <input type="text" placeholder="CUIT" />
@@ -39,7 +43,9 @@ const RegistrationComponent = () => {
           </form>
         </div>
       </div>
+
     </div>
+
   );
 };
 

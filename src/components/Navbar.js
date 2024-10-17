@@ -4,7 +4,7 @@ import './Navbar.css';
 import homeIcon from '../images/icons/home.png';
 import cartIcon from '../images/icons/cart.png';
 
-const Navbar = () => {
+const Navbar = ({ openModal }) => {
   return (
     <nav className="navbar">
       <div className="navbar-logo">
@@ -30,7 +30,7 @@ const Navbar = () => {
         </div>
         <div className="navbar-auth">
           <div className="vertical-line"></div>
-          <Link to="/register" className="register-btn">Register</Link>
+          <Link to="/register" className="register-btn" onClick={openModal} >Register</Link>
           <Link to="/login" className="login-btn">Log in</Link>
         </div>
       </div>
