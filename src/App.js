@@ -18,6 +18,7 @@ import useModal from './useModal';
 function App() {
 
   const { isOpen, openModal, closeModal } = useModal();
+  
 
   return (
     <Router>

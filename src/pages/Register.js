@@ -26,9 +26,14 @@ const RegistrationComponent = ({ isOpen, onClose }) => {
           </form>
         </div>
         <div
+
+
           className={`formSection ${activeForm === 'store' ? 'activeStore' : 'inactiveStore'}`}
           onClick={() => setActiveForm('store')}
         >
+
+          <button class="close-btn" onClick={onClose}>×</button>
+
           <h2 className="formTitle" style={{
             color: activeForm === 'store' ? '#1c0020' : '#cccccc',
             borderBottom: activeForm === 'store' ? '2px solid #1c0020' : '2px solid #cccccc'
