@@ -10,12 +10,13 @@ import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Game from './components/Game';
 
 function App() {
   return (
     <Router>
       <div className="App">
-        {/* <Navbar /> */}
+        <Navbar />
         {/* <div className="content-wrapper">
           <Hero />
           <div className="search-nav-wrapper">
@@ -25,7 +26,10 @@ function App() {
           <Carousel />
           <ImagesPlaceholder />
         </div> */}
-        <Login />
+        {/* <Login />
+        <Register /> */}
+
+        <Game />
       </div>
 
 
