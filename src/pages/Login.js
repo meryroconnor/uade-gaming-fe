@@ -2,10 +2,14 @@ import React from 'react';
 import './Login.css';
 import LoginImage from'../images/LoginImage.png';
 
-const LoginComponent = () => {
+const LoginComponent = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+
     return (
-        <div className='wrapper'>
-            <div className="container">
+        <div className='modal'>            
+            <div className="overlay"></div>
+            <div className="mainContainer">
+                
                 <div className="imageContainer">
                     <img
                         src={LoginImage}
@@ -14,6 +18,8 @@ const LoginComponent = () => {
                     />
                 </div>
                 <div className="formContainer">
+                <button class="close-btn" onClick={onClose}>×</button>
+
                     <h2 className="title">Welcome Back!</h2>
                     <p className="subtitle">Find awesome games<br />Explore new dimensions</p>
                     <form className="form">

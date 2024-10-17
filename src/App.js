@@ -17,15 +17,18 @@ import useModal from './useModal';
 
 function App() {
 
-  const { isOpen, openModal, closeModal } = useModal();
-  
+  const loginModal = useModal();
+  const registerModal = useModal();
 
   return (
     <Router>
       <div className="App">
-      <Navbar openModal={openModal} /> {/* Pass openModal as a prop */}
-      <Register isOpen={isOpen} onClose={closeModal} />
-      <Hero />
+        <Navbar openLoginModal={loginModal.openModal}
+          openRegisterModal={registerModal.openModal}
+        />
+        <Register isOpen={registerModal.isOpen} onClose={registerModal.closeModal} />
+        <Login isOpen={loginModal.isOpen} onClose={loginModal.closeModal} />
+        <Hero />
       </div>
 
 
