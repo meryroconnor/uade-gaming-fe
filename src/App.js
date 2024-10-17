@@ -11,6 +11,7 @@ import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Game from './components/Game';
+import FilterMenu from './components/FilterMenu';
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
         {/* <Login />
         <Register /> */}
 
-        <Game />
+          <FilterMenu />
       </div>
 
 
