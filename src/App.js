@@ -12,6 +12,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Game from './components/Game';
 import FilterMenu from './components/FilterMenu';
+import PurchaseTotal from './components/PurchaseTotal';
 
 function App() {
   return (
@@ -30,7 +31,9 @@ function App() {
         {/* <Login />
         <Register /> */}
 
-          <FilterMenu />
+        <PurchaseTotal />
+
+        
       </div>
 
 
