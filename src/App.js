@@ -9,6 +9,7 @@ import NavigationIcons from './components/homepage/NavigationIcons';
 import './App.css';
 import Carousel from './components/homepage/Carousel';
 import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
+import Testimonials from './components/homepage/Testimonials';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Carousel />
           <Highlights />
           <ImagesPlaceholder />
+          <Testimonials />
           
         </div>
         <Footer />
