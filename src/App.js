@@ -8,21 +8,30 @@ import './App.css';
 import Carousel from './components/homepage/Carousel';
 import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
 
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Game from './components/Game';
+import FilterMenu from './components/FilterMenu';
+import PurchaseTotal from './components/PurchaseTotal';
+import useModal from './useModal';
+
 function App() {
+
+  const loginModal = useModal();
+  const registerModal = useModal();
+
   return (
     <Router>
       <div className="App">
-        <Navbar />
-        <div className="content-wrapper">
-          <Hero />
-          <div className="search-nav-wrapper">
-            <SearchBar />
-            <NavigationIcons />
-          </div>
-          <Carousel />
-          <ImagesPlaceholder />
-        </div>
+        <Navbar openLoginModal={loginModal.openModal}
+          openRegisterModal={registerModal.openModal}
+        />
+        <Register isOpen={registerModal.isOpen} onClose={registerModal.closeModal} />
+        <Login isOpen={loginModal.isOpen} onClose={loginModal.closeModal} />
+        <Hero />
       </div>
+
+
     </Router>
   );
 }

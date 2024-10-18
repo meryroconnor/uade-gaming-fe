@@ -1,0 +1,48 @@
+.filter-menu {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 250px;
+
+    margin-top: 10rem;
+  }
+  
+  .filter-group {
+    margin-bottom: 15px;
+  }
+  
+  .filter-group label {
+    display: block;
+    margin-bottom: 5px;    
+  }
+  
+  .filter-group select,
+  .filter-group input[type="number"] {
+    width: 55%;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #555;
+    background-color: #444;
+    color: #fff;
+  }
+  
+  .price-inputs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .price-inputs input {
+    width: 60px;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid #555;
+    background-color: #444;
+    color: #fff;
+  }
+  
+  .filter-group input[type="radio"] {
+    margin-right: 5px;
+  }
+  
