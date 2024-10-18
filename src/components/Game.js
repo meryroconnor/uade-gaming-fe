@@ -5,9 +5,10 @@ import { FaWindows } from "react-icons/fa";
 import { FaApple } from "react-icons/fa";
 import { FaLinux } from "react-icons/fa";
 import { BsCart4 } from "react-icons/bs";
+import { useFetch } from '../useFetch';
 
 const GameChart = ({ id }) => {
-    const { data, loding, error } = useFetch(`http://localhost/api/games/${id}`);
+    const { data, loading, error } = useFetch(`../pages/test.json`);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
@@ -39,9 +40,9 @@ const GameChart = ({ id }) => {
                 </div>
                 <div className="platforms">
                     <div>
-                        {game.platforms.isApple ? <span className="platformIcon"><FaApple /></span> : null}
-                        {game.platforms.isMicrosoft ? <span className="platformIcon"><FaWindows /></span> : null}
-                        {game.platforms.isLinux ? <span className="platformIcon"><FaLinux /></span> : null}                        
+                        {game.os.includes("Mac") ? <span className="platformIcon"><FaApple /></span> : null}
+                        {game.os.includes("Windows") ? <span className="platformIcon"><FaWindows /></span> : null}
+                        {game.os.includes("Linux") ? <span className="platformIcon"><FaLinux /></span> : null}                        
                     </div>
                     <button className="addButton">Add <BsCart4 className='shoppingCart' /></button>
                 </div>

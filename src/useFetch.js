@@ -11,7 +11,7 @@ export function useFetch(url) {
             .then(res => res.json())
             .then(data => setData(data))
             .catch(err => setError(err))
-            .Finally(() => setLoading(false));
+            .finally(() => setLoading(false));
     }, []);
 
     return { data, loading, error };

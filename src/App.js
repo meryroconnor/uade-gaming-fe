@@ -15,6 +15,8 @@ import FilterMenu from './components/FilterMenu';
 import PurchaseTotal from './components/PurchaseTotal';
 import useModal from './useModal';
 
+import Catalog from './pages/Catalog';
+
 function App() {
 
   const loginModal = useModal();
@@ -23,12 +25,15 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Navbar openLoginModal={loginModal.openModal}
+        {/* <Navbar openLoginModal={loginModal.openModal}
           openRegisterModal={registerModal.openModal}
         />
         <Register isOpen={registerModal.isOpen} onClose={registerModal.closeModal} />
         <Login isOpen={loginModal.isOpen} onClose={loginModal.closeModal} />
-        <Hero />
+        <Hero /> */}
+
+        <Catalog />
+        
       </div>
 
 
