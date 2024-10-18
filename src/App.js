@@ -1,12 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Highlights from './components/homepage/Highlights';
 import Hero from './components/homepage/Hero';
 import SearchBar from './components/homepage/SearchBar';
 import NavigationIcons from './components/homepage/NavigationIcons';
 import './App.css';
 import Carousel from './components/homepage/Carousel';
 import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
+import Testimonials from './components/homepage/Testimonials';
 
 function App() {
   return (
@@ -20,8 +23,12 @@ function App() {
             <NavigationIcons />
           </div>
           <Carousel />
+          <Highlights />
           <ImagesPlaceholder />
+          <Testimonials />
+          
         </div>
+        <Footer />
       </div>
     </Router>
   );
