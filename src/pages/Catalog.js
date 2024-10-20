@@ -22,7 +22,7 @@ const GamesList = () => {
     const [rating, setRating] = useState('');
 
 
-    const { data, loading, error } = useFetch(`./test.json`);
+    const { data, loading, error } = useFetch('http://127.0.0.1:3000/games/');
 
     useEffect(() => {
         if (data) {
@@ -47,13 +47,13 @@ const GamesList = () => {
         setFilteredGames(filtered);
     }, [games, genre, os, language, priceFrom, priceTo, playerMode, rating]);
 
-    // if (loading) return <p>Loading...</p>;
-    // if (error) return <p>Error: {error.message}</p>;
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
 
     return (
         <div className='catalog-body'>
             <Navbar />
-
+        
             < div className='catalog-titles'>
                 <h1>Showing <span className='titleInColor'>({filteredGames.length}) games</span> </h1>
                 <GameSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -85,7 +85,7 @@ const GamesList = () => {
                     <div className="catalog-game-cards">
                         {filteredGames.map(game => (
                             <div key={game.id} className="game-card">
-                                <Game id={game.id} />
+                                <Game game={game} />
                             </div>
                         ))}
                     </div>
