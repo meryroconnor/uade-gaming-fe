@@ -31,7 +31,7 @@ const GameChart = ({ game }) => {
                 <div className="rating">
                     <div className='starsContainer'>
                         {Array.from({ length: game.rating }, (_, index) => (
-                            <span key={index}>⭐</span>
+                            <span key={index}>⭐</span>                            
                         ))}
                     </div>
                     <div className="priceContainer">

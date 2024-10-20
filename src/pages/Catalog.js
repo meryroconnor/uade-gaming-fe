@@ -12,6 +12,26 @@ const GamesList = () => {
     const [filteredGames, setFilteredGames] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
+    const { data, loading, error } = useFetch('http://127.0.0.1:3000/games/');
+
+    // Pagination
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 4;
+
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredGames.slice(indexOfFirstItem, indexOfLastItem);
+
+    const nextPage = () => {
+        setCurrentPage((prevPage) => prevPage + 1);
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prevPage) => prevPage - 1);
+        }
+    };
+
     // State for filters
     const [genre, setGenre] = useState('');
     const [os, setOs] = useState([]);
@@ -22,7 +42,6 @@ const GamesList = () => {
     const [rating, setRating] = useState('');
 
 
-    const { data, loading, error } = useFetch('http://127.0.0.1:3000/games/');
 
     useEffect(() => {
         if (data) {
@@ -53,7 +72,7 @@ const GamesList = () => {
     return (
         <div className='catalog-body'>
             <Navbar />
-        
+
             < div className='catalog-titles'>
                 <h1>Showing <span className='titleInColor'>({filteredGames.length}) games</span> </h1>
                 <GameSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
@@ -83,13 +102,36 @@ const GamesList = () => {
                 {/* Game Catalog */}
                 <section className="catalog-grid">
                     <div className="catalog-game-cards">
-                        {filteredGames.map(game => (
+                        {currentItems.map(game => (
                             <div key={game.id} className="game-card">
                                 <Game game={game} />
                             </div>
                         ))}
                     </div>
+
+
+
                 </section>
+
+
+
+
+
+
+
+            </div>
+            {/* Botones de paginación */}
+            <div className="pagination">
+                <button className='arrowButton' onClick={prevPage} disabled={currentPage === 1}>
+                    ←
+                </button>
+                {/* <span>{currentPage}</span> */}
+                <button className='arrowButton'
+                    onClick={nextPage}
+                    disabled={indexOfLastItem >= filteredGames.length}
+                >
+                    →
+                </button>
             </div>
         </div>
 
