@@ -1,11 +1,10 @@
 import React from 'react';
 import './Game.css';
-import CrashImage from '../images/games/crash.jpg';
 import { FaWindows } from "react-icons/fa";
 import { FaApple } from "react-icons/fa";
 import { FaLinux } from "react-icons/fa";
 import { BsCart4 } from "react-icons/bs";
-import { useFetch } from '../useFetch';
+
 
 const GameChart = ({ game }) => {
     

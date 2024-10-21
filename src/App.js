@@ -30,11 +30,7 @@ function App() {
         />
         <Register isOpen={registerModal.isOpen} onClose={registerModal.closeModal} />
         <Login isOpen={loginModal.isOpen} onClose={loginModal.closeModal} />
-        <Hero /> */}
-
-        <Catalog />
-      
-        
+        <Hero /> */}         
       </div>
 
 
