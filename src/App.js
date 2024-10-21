@@ -10,6 +10,8 @@ import './App.css';
 import Carousel from './components/homepage/Carousel';
 import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
 import Testimonials from './components/homepage/Testimonials';
+import ProductHero from './components/product_detail/ProductHero';
+import Rating from './components/product_detail/Rating';
 
 function App() {
   return (
@@ -17,7 +19,8 @@ function App() {
       <div className="App">
         <Navbar />
         <div className="content-wrapper">
-          <Hero />
+          <ProductHero />
+          {/* <Hero />
           <div className="search-nav-wrapper">
             <SearchBar />
             <NavigationIcons />
@@ -25,8 +28,8 @@ function App() {
           <Carousel />
           <Highlights />
           <ImagesPlaceholder />
-          <Testimonials />
-          
+           */}
+          <Rating rating={2.5} reviewCount={116} />
         </div>
         <Footer />
       </div>

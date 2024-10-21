@@ -1,0 +1,124 @@
+/* Rating.css */
+
+.rating {
+    background-color: #121212;
+    color: white;
+    padding: 40px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .rating__title {
+    font-size: 40px;
+    font-weight: lighter;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  
+  .rating__summary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+  }
+  
+  .rating__stars {
+    display: flex;
+  }
+  
+  .rating__score {
+    margin-left: 8px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .rating__count {
+    margin-left: 8px;
+    font-size: 14px;
+    color: #888;
+  }
+  
+  .rating__testimonials {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .rating__card {
+    background-color: #1E1E1E;
+    padding: 24px;
+    border-radius: 8px;
+  }
+  
+  .rating__user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .rating__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #333;
+    margin-right: 16px;
+  }
+  
+  .rating__name {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+  
+  .rating__user-rating {
+    font-size: 14px;
+    color: #ffa500;
+  }
+  
+  .rating__comment {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .rating__navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 40px;
+  }
+  
+  .rating__dots {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .rating__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #4a4a4a;
+    cursor: pointer;
+  }
+  
+  .rating__dot--active {
+    background-color: #ffa500;
+  }
+  
+  .rating__arrows {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .rating__arrow {
+    background-color: #4a4a4a;
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .rating__arrow:hover {
+    background-color: #ffa500;
+    color: #121212;
+  }
