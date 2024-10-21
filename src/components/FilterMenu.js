@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
 import './FilterMenu.css'; // Import the CSS file
 
-const FilterMenu = () => {
-  const [genre, setGenre] = useState('');
-  const [os, setOs] = useState('');
-  const [language, setLanguage] = useState('');
-  const [priceFrom, setPriceFrom] = useState('');
-  const [priceTo, setPriceTo] = useState('');
-  const [playerMode, setPlayerMode] = useState('');
-  const [rating, setRating] = useState('');
+const FilterMenu = ({ genre, setGenre, os, setOs, language, setLanguage, priceFrom, setPriceFrom, priceTo, setPriceTo, playerMode, setPlayerMode, rating, setRating }, { resetFilters }) => {
+
 
   return (
     <div className="filter-menu">
@@ -25,13 +19,13 @@ const FilterMenu = () => {
       <div className="filter-group">
         <label>Operative system</label>
         <div>
-          <input type="radio" name="os" value="mac" onChange={() => setOs('Mac')} /> Mac
+          <input type="radio" name="os" value="Mac" onChange={() => setOs('Mac')} /> Mac
         </div>
         <div>
-          <input type="radio" name="os" value="windows" onChange={() => setOs('Windows')} /> Windows
+          <input type="radio" name="os" value="Windows" onChange={() => setOs('Windows')} /> Windows
         </div>
         <div>
-          <input type="radio" name="os" value="linux" onChange={() => setOs('Linux')} /> Linux
+          <input type="radio" name="os" value="Linux" onChange={() => setOs('Linux')} /> Linux
         </div>
       </div>
 
@@ -67,10 +61,10 @@ const FilterMenu = () => {
       <div className="filter-group">
         <label>Player Mode</label>
         <div>
-          <input type="radio" name="playerMode" value="single" onChange={() => setPlayerMode('Single Player')} /> Single Player
+          <input type="radio" name="playerMode" value="single" onChange={() => setPlayerMode('Single-Player')} /> Single-Player
         </div>
         <div>
-          <input type="radio" name="playerMode" value="multi" onChange={() => setPlayerMode('Multi-Player')} /> Multi-Player
+          <input type="radio" name="playerMode" value="multi" onChange={() => setPlayerMode('MultiPlayer')} /> MultiPlayer
         </div>
       </div>
 
@@ -84,7 +78,14 @@ const FilterMenu = () => {
           <option value="4">4 Stars</option>
         </select>
       </div>
+{/* 
+      <button className="reset-button" onClick={resetFilters}>
+            Reset Filters
+        </button> */}
+
+      
     </div>
+    
   );
 };
 

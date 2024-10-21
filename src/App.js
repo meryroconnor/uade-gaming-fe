@@ -33,6 +33,7 @@ function App() {
         <Hero /> */}
 
         <Catalog />
+      
         
       </div>
 

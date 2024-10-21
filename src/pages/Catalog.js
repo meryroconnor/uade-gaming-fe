@@ -41,6 +41,16 @@ const GamesList = () => {
     const [playerMode, setPlayerMode] = useState('');
     const [rating, setRating] = useState('');
 
+    // Reset Filters
+    // const resetFilters = () => {
+    //     setGenre('');
+    //     setOs([]);
+    //     setLanguage([]);
+    //     setPriceFrom('');
+    //     setPriceTo('');
+    //     setPlayerMode('');
+    //     setRating('');
+    // };
 
 
     useEffect(() => {
@@ -50,21 +60,21 @@ const GamesList = () => {
     }, [data]);
 
     useEffect(() => {
-        // Filter games based on selected filters
         const filtered = games.filter(game => {
             return (
-                game.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-                (genre ? game.genre === genre : true) &&
-                (os.length > 0 ? os.includes(game.os) : true) &&
-                (language ? game.language === language : true) &&
-                (priceFrom ? game.price >= Number(priceFrom) : true) &&
-                (priceTo ? game.price <= Number(priceTo) : true) &&
-                (playerMode ? game.playerMode === playerMode : true) &&
-                (rating ? game.rating === Number(rating) : true)
+                (!searchQuery || game.name.toLowerCase().includes(searchQuery.toLowerCase())) &&
+                (!genre || game.genre.toLowerCase() === genre.toLowerCase()) &&
+                (os.length === 0 || game.os.toLowerCase().includes(os.toLowerCase())) &&
+                (!language || game.language.toLowerCase().includes(language.toLowerCase())) &&
+                (!priceFrom || game.price >= Number(priceFrom)) &&
+                (!priceTo || game.price <= Number(priceTo)) &&
+                (!playerMode || game.playerMode.toLowerCase().includes(playerMode.toLowerCase())) &&
+                (!rating || game.rating == Number(rating))
             );
         });
         setFilteredGames(filtered);
-    }, [games, genre, os, language, priceFrom, priceTo, playerMode, rating]);
+    }, [games, genre, os, language, priceFrom, priceTo, playerMode, rating, searchQuery]);
+    ;
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
@@ -105,6 +115,7 @@ const GamesList = () => {
                         {currentItems.map(game => (
                             <div key={game.id} className="game-card">
                                 <Game game={game} />
+                                {console.log(game.rating)}
                             </div>
                         ))}
                     </div>
@@ -122,16 +133,17 @@ const GamesList = () => {
             </div>
             {/* Botones de paginación */}
             <div className="pagination">
-                <button className='arrowButton' onClick={prevPage} disabled={currentPage === 1}>
+                 <button className='arrowButton' onClick={prevPage} disabled={currentPage === 1}>
                     ←
                 </button>
-                {/* <span>{currentPage}</span> */}
+                
                 <button className='arrowButton'
                     onClick={nextPage}
                     disabled={indexOfLastItem >= filteredGames.length}
                 >
                     →
                 </button>
+                   
             </div>
         </div>
 

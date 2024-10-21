@@ -8,12 +8,7 @@ import { BsCart4 } from "react-icons/bs";
 import { useFetch } from '../useFetch';
 
 const GameChart = ({ game }) => {
-
-    // if (loading) return <p>Loading...</p>;
-    // if (error) return <p>Error: {error.message}</p>;
-
-    // const { data, loading, error } = useFetch(`./test.json`);
-    // const game = data?.find((game) => game.id === id);
+    
     return (
         <div className="container">
             <div className="imageContainer">
@@ -35,7 +30,7 @@ const GameChart = ({ game }) => {
                         ))}
                     </div>
                     <div className="priceContainer">
-                        <span className="price">${game.price}</span>
+                        <span className="price">{game.price === 0 ? "Free" : `${game.price}`}</span>
                     </div>
                 </div>
                 <div className="platforms">
