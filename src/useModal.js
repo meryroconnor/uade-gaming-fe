@@ -11,7 +11,7 @@ const useModal = () => {
     isOpen,
     openModal,
     closeModal,
-    toggleModal,f
+    toggleModal,
   };
 };
 
