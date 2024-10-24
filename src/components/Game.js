@@ -1,13 +1,13 @@
 import React from 'react';
 import './Game.css';
-import CrashImage from '../images/games/crash.jpg';
+import useFetch from '../useFetch';
 import { FaWindows } from "react-icons/fa";
 import { FaApple } from "react-icons/fa";
 import { FaLinux } from "react-icons/fa";
 import { BsCart4 } from "react-icons/bs";
 
 const GameChart = ({ id }) => {
-    const { data, loding, error } = useFetch(`http://localhost/api/games/${id}`);
+    const { data, loading, error } = useFetch(`http://localhost/api/games/${id}`);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
@@ -48,9 +48,9 @@ const GameChart = ({ id }) => {
 
 
 
-//             </div>
-//         </div>
-//     );
-// };
+             </div>
+        </div>
+     );
+ };
 
-// export default GameChart;
+ export default GameChart;
