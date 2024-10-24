@@ -1,0 +1,75 @@
+[
+    {
+      "id": 1,
+      "name": "Cyber Warriors",
+      "genre": "Action",
+      "os": "Windows",
+      "language": "English",
+      "price": 19.99,
+      "playerMode": "Single-player",
+      "rating": 4,
+      "developer": "Tech Innovations",
+      "releaseDate": "2023-05-15"
+    },
+    {
+      "id": 2,
+      "name": "Mystic Quest",
+      "genre": "Adventure",
+      "os": "Mac",
+      "language": "Spanish",
+      "price": 29.99,
+      "playerMode": "Multiplayer",
+      "rating": 3,
+      "developer": "Epic Games",
+      "releaseDate": "2022-11-10"
+    },
+    {
+      "id": 3,
+      "name": "Galactic Heroes",
+      "genre": "Strategy",
+      "os": "Linux",
+      "language": "English",
+      "price": 15.0,
+      "playerMode": "Single-player",
+      "rating": 4,
+      "developer": "Galactic Studios",
+      "releaseDate": "2024-01-20"
+    },
+    {
+      "id": 4,
+      "name": "Fantasy World",
+      "genre": "RPG",
+      "os": "Windows",
+      "language": "French",
+      "price": 9.99,
+      "playerMode": "Multiplayer",
+      "rating": 2,
+      "developer": "Fantasy Creations",
+      "releaseDate": "2023-08-05"
+    },
+    {
+      "id": 5,
+      "name": "Racing Rivals",
+      "genre": "Racing",
+      "os": "Mac",
+      "language": "German",
+      "price": 25.0,
+      "playerMode": "Multiplayer",
+      "rating": 1,
+      "developer": "Speedy Games",
+      "releaseDate": "2021-03-12"
+    },
+    {
+      "id": 6,
+      "name": "Castle Defenders",
+      "genre": "Strategy",
+      "os": "Windows",
+      "language": "Spanish",
+      "price": 14.99,
+      "playerMode": "Single-player",
+      "rating": 3,
+      "developer": "Defense Studios",
+      "releaseDate": "2022-06-18"
+    }
+  ]
+  
