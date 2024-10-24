@@ -2,6 +2,8 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Highlights from './components/homepage/Highlights';
 import Hero from './components/homepage/Hero';
 import Register from './pages/Register';
 import Login from './pages/Login';
@@ -14,7 +16,6 @@ function App() {
   const registerModal = useModal();
 
   return (
-    <UserProvider> {/* Wrap the app with UserProvider */}
       <Router>
         <div className="App">
           <Navbar 
@@ -30,9 +31,20 @@ function App() {
             onClose={loginModal.closeModal} 
           />
           <Hero />
+
+          <div className="search-nav-wrapper">
+            <SearchBar />
+            <NavigationIcons />
+          </div>
+          <Carousel />
+          <Highlights />
+          <ImagesPlaceholder />
+          <Testimonials />
+          
         </div>
-      </Router>
-    </UserProvider>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
