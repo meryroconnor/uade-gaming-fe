@@ -10,21 +10,8 @@ import './App.css';
 import Carousel from './components/homepage/Carousel';
 import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
 import Testimonials from './components/homepage/Testimonials';
-
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Game from './components/Game';
-import FilterMenu from './components/FilterMenu';
-import PurchaseTotal from './components/PurchaseTotal';
-import useModal from './useModal';
-
-import Catalog from './pages/Catalog';
-
+ 
 function App() {
-
-  const loginModal = useModal();
-  const registerModal = useModal();
-
   return (
     <Router>
       <div className="App">
@@ -43,10 +30,8 @@ function App() {
         </div>
         <Footer />
       </div>
-
-
     </Router>
   );
 }
-
+ 
 export default App;
