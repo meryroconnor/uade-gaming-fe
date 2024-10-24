@@ -19,7 +19,7 @@
 
 import { useState, useEffect } from 'react';
 
-export function useFetch(url) {
+export default function useFetch(url) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

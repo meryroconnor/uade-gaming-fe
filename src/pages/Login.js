@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
 import './Login.css';
 import LoginImage from '../images/LoginImage.png';
-import { useUser } from '../userContext'; // Import the context
 
 const LoginComponent = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [asCompany, setAsCompany] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-
-    const { login } = useUser(); // Use login function from context
 
     if (!isOpen) return null;
 
@@ -22,8 +19,9 @@ const LoginComponent = ({ isOpen, onClose }) => {
             asCompany,
         };
 
-        const apiUrl = asCompany 
-            ? 'http://127.0.0.1:3000/companies/login' 
+        // Choose the appropriate API endpoint based on checkbox status
+        const apiUrl = asCompany
+            ? 'http://127.0.0.1:3000/companies/login'
             : 'http://127.0.0.1:3000/users/login';
 
         try {
@@ -36,21 +34,20 @@ const LoginComponent = ({ isOpen, onClose }) => {
             });
 
             if (!response.ok) {
-                throw new Error('Login failed'); 
+                throw new Error('Login failed');
             }
 
             const data = await response.json();
             console.log('Login successful:', data);
 
-            login(data); // Update user context with the response data
-            onClose(); // Close the login modal
+            onClose();
         } catch (error) {
-            setErrorMessage(error.message); 
+            setErrorMessage(error.message);
         }
     };
 
     return (
-        <div className='modal'>            
+        <div className='modal'>
             <div className="overlay"></div>
             <div className="mainContainer">
                 <div className="imageContainer">
@@ -65,34 +62,34 @@ const LoginComponent = ({ isOpen, onClose }) => {
 
                     <h2 className="title">Welcome Back!</h2>
                     <p className="subtitle">Find awesome games<br />Explore new dimensions</p>
-                    
+
                     {errorMessage && <p className="error">{errorMessage}</p>}
 
                     <form className="form" onSubmit={handleSubmit}>
-                        <input 
-                            type="email" 
-                            placeholder="Email" 
-                            className="input" 
-                            required 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)} 
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            className="input"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
-                        <input 
-                            type="password" 
-                            placeholder="Password" 
-                            className="input" 
-                            required 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            className="input"
+                            required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
-                        
+
                         <div className="checkboxContainer">
-                            <input 
-                                type="checkbox" 
-                                id="asCompany" 
-                                className="checkbox" 
-                                checked={asCompany} 
-                                onChange={(e) => setAsCompany(e.target.checked)} 
+                            <input
+                                type="checkbox"
+                                id="asCompany"
+                                className="checkbox"
+                                checked={asCompany}
+                                onChange={(e) => setAsCompany(e.target.checked)}
                             />
                             <label htmlFor="asCompany" className="checkboxLabel">As a company</label>
                         </div>
