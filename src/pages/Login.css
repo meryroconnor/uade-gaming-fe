@@ -1,0 +1,213 @@
+.modal {
+  width: 100%;
+  height: 100%;
+  min-height: 620px;
+  max-height: 620px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.mainContainer {
+  display: flex;
+  width: 50%; /* Default width for larger screens */
+  height: 60%; /* Default height for larger screens */
+  border-radius: 10px;
+  overflow: hidden;
+  color: #fff;
+  background-color: #4a0e4e;
+  z-index: 1000;
+  flex-direction: row; /* Row by default */
+}
+
+/* Close Button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+  line-height: 20px;
+  color: white;
+  font-weight: bold;
+  font-size: 22px;
+}
+
+/* Image Container */
+.modal .imageContainer {
+  flex: 1;
+  background-color: #161b33;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal .image {
+  max-width: 100%;
+  height: 100%;
+}
+
+/* Form Container */
+.modal .formContainer {
+  flex: 1;
+  padding: 20px;
+  background-color: #4a0e4e;
+  position: relative;
+}
+
+.modal .title {
+  margin: 0;
+  font-size: 20px;
+}
+
+.modal .subtitle {
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.modal .form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal .input {
+  margin: 8px 0;
+  padding: 8px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: transparent;
+  color: white;
+}
+
+.modal .loginButton {
+  margin: 8px 0;
+  padding: 8px;
+  background-color: #fff;
+  color: #4a0e4e;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.modal .loginButton:hover {
+  background-color: #fec260;
+}
+
+/* Footer Links */
+.modal .footer {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.modal .link {
+  color: #fec260;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.modal .divider {
+  color: #fff;
+  font-size: 12px;
+}
+
+.checkboxContainer{
+  
+}
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .mainContainer {
+      width: 80%; /* Increase width on smaller screens */
+      height: 70%; /* Increase height on smaller screens */
+  }
+
+  .modal .imageContainer {
+      display: none; /* Hide the image on tablets for more space */
+  }
+
+  .modal .formContainer {
+      flex: 1;
+      padding: 20px;
+  }
+
+  .modal .title {
+      font-size: 18px; /* Slightly smaller text */
+  }
+
+  .modal .subtitle {
+      font-size: 13px;
+  }
+
+  .modal .input {
+      font-size: 13px;
+  }
+
+  .modal .loginButton {
+      font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mainContainer {
+      width: 90%; /* Modal takes up most of the screen width */
+      height: auto; /* Allow height to adjust dynamically */
+      flex-direction: column; /* Stack content vertically on mobile */
+  }
+
+  .modal .formContainer {
+      padding: 15px; /* Reduce padding on mobile */
+  }
+
+  .modal .title {
+      font-size: 16px; /* Smaller title text */
+  }
+
+  .modal .subtitle {
+      font-size: 12px; /* Smaller subtitle text */
+  }
+
+  .modal .input {
+      padding: 6px; /* Smaller inputs */
+      font-size: 12px; /* Smaller input text */
+  }
+
+  .modal .loginButton {
+      padding: 6px; /* Smaller button */
+      font-size: 13px; /* Smaller button text */
+  }
+
+  .modal .footer {
+      gap: 3px; /* Closer links */
+  }
+
+  .modal .link, .modal .divider {
+      font-size: 11px;
+  }
+}

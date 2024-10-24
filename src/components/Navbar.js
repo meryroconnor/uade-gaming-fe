@@ -3,8 +3,12 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 import homeIcon from '../images/icons/home.png';
 import cartIcon from '../images/icons/cart.png';
+import fantasmita from '../images/fantasmita_secondary.jpg';
 
-const Navbar = () => {
+import { useUser } from '../userContext'; // Import User context
+
+const Navbar = ({ openLoginModal, openRegisterModal }) => {
+  const { user, logout } = useUser();
   return (
     <nav className="navbar">
       <div className="navbar-logo">
@@ -28,11 +32,28 @@ const Navbar = () => {
             <img src={cartIcon} alt="Cart" className="icon" />
           </Link>
         </div>
-        <div className="navbar-auth">
-          <div className="vertical-line"></div>
-          <Link to="/register" className="register-btn">Register</Link>
-          <Link to="/login" className="login-btn">Log in</Link>
-        </div>
+        {/* Check if the user is logged in */}
+        {user ? (
+          <div className="navbar-auth">
+            <div className="vertical-line"></div>
+            {/* When logged in, show just the "Sign Out" button */}
+            <button onClick={logout} className="logout-btn">
+              Sign Out
+            </button>
+
+            <img 
+                src={user.avatar || fantasmita} // Fallback to a default avatar if user.avatar is not available
+                alt="Avatar" 
+                className="avatar" 
+              />
+          </div>
+        ) : (
+          <div className="navbar-auth">
+            <div className="vertical-line"></div>
+            <Link to="/register" className="register-btn" onClick={openRegisterModal}>Register</Link>
+            <Link to="/login" className="login-btn" onClick={openLoginModal}>Log in</Link>
+          </div>
+        )}
       </div>
     </nav>
   );
