@@ -8,6 +8,7 @@ import './App.css';
 import Carousel from './components/homepage/Carousel';
 import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
 
+import Catalog from './pages/Catalog';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Game from './components/Game';
@@ -30,7 +31,8 @@ function App() {
           />
           <Register isOpen={registerModal.isOpen} onClose={registerModal.closeModal} />
           <Login isOpen={loginModal.isOpen} onClose={loginModal.closeModal} />
-          <Hero />
+          {/* <Hero /> */}
+          <Catalog />
 
         </div>
       </Router>
