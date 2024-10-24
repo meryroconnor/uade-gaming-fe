@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import './Login.css';
 import LoginImage from '../images/LoginImage.png';
+import { useUser } from '../userContext'; // Import the context
 
 const LoginComponent = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [asCompany, setAsCompany] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+
+    const { login } = useUser(); // Use login function from context
 
     if (!isOpen) return null;
 
@@ -19,7 +22,6 @@ const LoginComponent = ({ isOpen, onClose }) => {
             asCompany,
         };
 
-        // Choose the appropriate API endpoint based on checkbox status
         const apiUrl = asCompany 
             ? 'http://127.0.0.1:3000/companies/login' 
             : 'http://127.0.0.1:3000/users/login';
@@ -40,7 +42,8 @@ const LoginComponent = ({ isOpen, onClose }) => {
             const data = await response.json();
             console.log('Login successful:', data);
 
-            onClose(); 
+            login(data); // Update user context with the response data
+            onClose(); // Close the login modal
         } catch (error) {
             setErrorMessage(error.message); 
         }
