@@ -10,6 +10,7 @@ import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Catalog from './pages/Catalog';
 import Game from './components/Game';
 import FilterMenu from './components/FilterMenu';
 import PurchaseTotal from './components/PurchaseTotal';
@@ -30,7 +31,8 @@ function App() {
           />
           <Register isOpen={registerModal.isOpen} onClose={registerModal.closeModal} />
           <Login isOpen={loginModal.isOpen} onClose={loginModal.closeModal} />
-          <Hero />
+          {/* <Hero /> */}
+          <Catalog />
 
         </div>
       </Router>
