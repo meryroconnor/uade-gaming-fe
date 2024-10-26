@@ -7,7 +7,6 @@ import NavigationIcons from './components/homepage/NavigationIcons';
 import './App.css';
 import Carousel from './components/homepage/Carousel';
 import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
-
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Catalog from './pages/Catalog';
@@ -16,6 +15,7 @@ import FilterMenu from './components/FilterMenu';
 import PurchaseTotal from './components/PurchaseTotal';
 import useModal from './useModal';
 import { UserProvider } from './userContext';
+
 
 function App() {
 

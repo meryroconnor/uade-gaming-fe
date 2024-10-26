@@ -1,0 +1,59 @@
+.product-detail {
+    background-color: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    padding: 40px;
+    margin: 0 8rem;
+  }
+  
+  .product-detail h1 {
+    font-size: 40px;
+    font-weight: lighter;
+    margin-bottom: 50px;
+
+  }
+  
+  .product-info {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .company-logo {
+    width: 150px;
+    height: 150px;
+    margin-right: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .company-info h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .company-info p {
+    margin-bottom: 5px;
+  }
+  
+  .specs {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .requirements, .recommendations {
+    width: 48%;
+  }
+  
+  .requirements h3, .recommendations h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  
+  .requirements ul, .recommendations ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .requirements li, .recommendations li {
+    margin-bottom: 5px;
+  }
