@@ -81,8 +81,6 @@ const GamesList = () => {
 
     return (
         <div className='catalog-body'>
-            <Navbar />
-
             < div className='catalog-titles'>
                 <h1>Showing <span className='titleInColor'>({filteredGames.length}) games</span> </h1>
                 <GameSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
