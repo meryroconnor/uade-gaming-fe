@@ -5,20 +5,26 @@ import { FaApple } from "react-icons/fa";
 import { FaLinux } from "react-icons/fa";
 import { BsCart4 } from "react-icons/bs";
 
+
+
+
+
 const GameChart = ({ game }) => {
+    const date = new Date(game.createdAt).toISOString().split('T')[0];
+  
     return (
         <div className="container">
             <div className="imageContainer">
                 <img
                     src={game.image}
-                    alt={game.name}
+                    alt=''
                     className="gameImage"
                 />
             </div>
             <div className="detailsContainer">
                 <h2 className="gameTitle">{game.name}</h2>
                 <p className="releaseInfo">
-                    `{game.releaseDate} / {game.developer}`
+                    {date} / {game.developer?.name}
                 </p>
                 <div className="rating">
                     <div className='starsContainer'>
@@ -46,3 +52,5 @@ const GameChart = ({ game }) => {
 };
 
 export default GameChart;
+
+
