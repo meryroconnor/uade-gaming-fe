@@ -23,7 +23,11 @@ const Navbar = ({ openLoginModal, openRegisterModal }) => {
             </Link>
           </li>
           <li><Link to="/catalog">Catalog</Link></li>
-          <li><Link to="/my-sales">My sales</Link></li>
+          { (
+            <li><Link to="/my-sales">My sales</Link></li>
+          )}
+          <li><Link to="/purchases">My</Link></li>
+
           <li><Link to="/purchases">Purchases</Link></li>
           <li><Link to="/wishlist">Wishlist</Link></li>
         </ul>
@@ -41,11 +45,11 @@ const Navbar = ({ openLoginModal, openRegisterModal }) => {
               Sign Out
             </button>
 
-            <img 
-                src={user.avatar || fantasmita} // Fallback to a default avatar if user.avatar is not available
-                alt="Avatar" 
-                className="avatar" 
-              />
+            <img
+              src={user.avatar || fantasmita} // Fallback to a default avatar if user.avatar is not available
+              alt="Avatar"
+              className="avatar"
+            />
           </div>
         ) : (
           <div className="navbar-auth">

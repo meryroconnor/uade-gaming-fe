@@ -5,6 +5,7 @@ import { AiFillStar, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { FiSettings } from "react-icons/fi";
 import './Game.css';
 
+
 const GameChart = ({ 
   game, 
   variant = 'catalog', 
@@ -12,6 +13,7 @@ const GameChart = ({
   isFavorite,
   onFavoriteClick 
 }) => {
+  const date = new Date(game.createdAt).toISOString().split('T')[0];
   const renderButtons = () => {
     if (variant === 'catalog') {
       return (
@@ -72,7 +74,7 @@ const GameChart = ({
       <div className="details-container">
         <h2 className="game-title">{game.name}</h2>
         <p className="release-info">
-          {game.releaseDate} / {game.developer}
+          {date} / {game.developer?.name}
         </p>
         
         <div className="rating-container">
@@ -95,6 +97,7 @@ const GameChart = ({
             {game.os.isLinux && <FaLinux className="platform-icon" />}
           </div>
           {renderButtons()}
+
         </div>
       </div>
     </div>
@@ -102,3 +105,4 @@ const GameChart = ({
 };
 
 export default GameChart;
+

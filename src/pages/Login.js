@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import './Login.css';
 import LoginImage from '../images/LoginImage.png';
+import { useUser } from '../userContext';
 
 const LoginComponent = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [asCompany, setAsCompany] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    const { login } = useUser();
 
     if (!isOpen) return null;
 
@@ -38,8 +40,7 @@ const LoginComponent = ({ isOpen, onClose }) => {
             }
 
             const data = await response.json();
-            console.log('Login successful:', data);
-
+            login(data);
             onClose();
         } catch (error) {
             setErrorMessage(error.message);
