@@ -46,6 +46,11 @@ const Navbar = ({ openLoginModal, openRegisterModal }) => {
               alt="Avatar"
               className="avatar"
             />
+            <img
+              src={user.avatar || fantasmita} // Fallback to a default avatar if user.avatar is not available
+              alt="Avatar"
+              className="avatar"
+            />
           </div>
         ) : (
           <div className="navbar-auth">

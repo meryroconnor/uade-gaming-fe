@@ -8,11 +8,22 @@ export function useFetch(url) {
     useEffect(() => {
         setLoading(true);
         fetch(url)
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
             .then(data => setData(data))
-            .catch(err => setError(err))
-            .Finally(() => setLoading(false));
-    }, []);
+            .catch(err => {
+                if (err.name === 'SyntaxError') {
+                    setError(new Error('Response is not valid JSON'));
+                } else {
+                    setError(err);
+                }
+            })
+            .finally(() => setLoading(false));
+    }, [url]);
 
     return { data, loading, error };
 }
