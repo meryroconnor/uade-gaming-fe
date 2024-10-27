@@ -1,89 +1,165 @@
-/* GameChart.css */
-.container {
-    display: flex;
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-    width: 45%;
-    height: 140px;
-    align-items: center;
+.game-container {
+  display: flex;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  width: 100%;
+  height: 140px;
+  align-items: center;
+  margin-bottom: 40px;
+  position: relative;
+}
 
-    margin-top: 10rem;
-  }
-  
-  .imageContainer {
-    flex: 0  120px;
-    height: 100%;
-    margin-right: 20px;
-  }
-  
-  .gameImage {
-    width: 100%;
-    border-radius: 10px;
-  }
-  
-  .detailsContainer {
-    flex: 1;
-    margin-top: 25px;
-  }
-  
-  .gameTitle {
-    margin: 0 0 5px 0;
-    font-size: 16px;
-  }
-  
-  .releaseInfo {
-    margin: 0 0 10px 0;
-    color: #aaa;
-  }
-  
-  .rating {
-    display: flex;
-    margin-bottom: 10px;
-    justify-content: space-between;
-   
-  }
+.game-container .image-container {
+  flex: 0 0 120px;
+  height: 100%;
+  margin-right: 20px;
+}
 
-  .star {
-    font-size: 18px;
-    margin-right: 1px;
-  }
-  
-  .platforms {
-    display: flex; 
-    justify-content: space-between;  
-  }
-  
-  .platformIcon {
-    font-size: 20px;
-    margin-right: 10px;
-    display: inline;
-  }
-  
-  .priceContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  
-  .price {
-    font-size: 18px;
-    font-weight: bold;
-    
-  }
-  
-  .platforms .addButton {
-    background-color: #fff;
-    color: black;
-    font-weight: bold;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;   
-    margin-bottom: 2rem;
-  }
-  
-  .shoppingCart{
-    size: px;
-  }
-  
+.game-container .game-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.details-container {
+  flex: 1;
+  margin-top: 25px;
+}
+
+.game-title {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.release-info {
+  margin: 0 0 10px 0;
+  color: #aaa;
+}
+
+.rating-container {
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stars-container {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  font-size: 18px;
+  margin-right: 2px;
+  color: #ffd700;
+}
+
+.platforms-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.platform-icons {
+  display: flex;
+  align-items: center;
+}
+
+.platform-icon {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.price-container {
+  display: flex;
+  align-items: center;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.button {
+  background-color: #fff;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.button:hover {
+  background-color: #f0f0f0;
+}
+
+.icon-right {
+  font-size: 16px;
+}
+
+/* Store variant styles */
+.store-variant {
+  border: 1px solid #444;
+}
+
+.settings-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.settings-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.settings-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Cart variant styles */
+.button-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.favorite-button {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.favorite-button:hover {
+  background-color: rgba(255, 77, 77, 0.1);
+  transform: scale(1.1);
+}
+
+.favorite-button svg {
+  width: 24px;
+  height: 24px;
+}

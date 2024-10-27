@@ -1,0 +1,26 @@
+.product-view {
+
+    color: white;
+    margin: 3rem auto;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .highlights__title {
+    font-size: 40px;
+    font-weight: lighter;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  
+
+  
+  .highlights__products_view {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 24px;
+    margin: 3rem;
+  }

@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import './Login.css';
 import LoginImage from '../images/LoginImage.png';
-import { useUser } from '../userContext'; // Import the context
+import { useUser } from '../userContext';
 
 const LoginComponent = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [asCompany, setAsCompany] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-
-    const { login } = useUser(); // Use login function from context
+    const { login } = useUser();
 
     if (!isOpen) return null;
 
@@ -21,6 +20,7 @@ const LoginComponent = ({ isOpen, onClose }) => {
             password,
             asCompany,
         };
+
 
         const apiUrl = 'http://127.0.0.1:3000/users/login';
 
@@ -34,21 +34,19 @@ const LoginComponent = ({ isOpen, onClose }) => {
             });
 
             if (!response.ok) {
-                throw new Error('Login failed'); 
+                throw new Error('Login failed');
             }
 
             const data = await response.json();
-            console.log('Login successful:', data);
-
-            login(data); // Update user context with the response data
-            onClose(); // Close the login modal
+            login(data);
+            onClose();
         } catch (error) {
-            setErrorMessage(error.message); 
+            setErrorMessage(error.message);
         }
     };
 
     return (
-        <div className='modal'>            
+        <div className='modal'>
             <div className="overlay"></div>
             <div className="mainContainer">
                 <div className="imageContainer">
@@ -63,26 +61,27 @@ const LoginComponent = ({ isOpen, onClose }) => {
 
                     <h2 className="title">Welcome Back!</h2>
                     <p className="subtitle">Find awesome games<br />Explore new dimensions</p>
-                    
+
                     {errorMessage && <p className="error">{errorMessage}</p>}
 
                     <form className="form" onSubmit={handleSubmit}>
-                        <input 
-                            type="email" 
-                            placeholder="Email" 
-                            className="input" 
-                            required 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)} 
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            className="input"
+                            required
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
-                        <input 
-                            type="password" 
-                            placeholder="Password" 
-                            className="input" 
-                            required 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            className="input"
+                            required
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
+
                         <button type="submit" className="loginButton">Log in</button>
                     </form>
                     <div className="footer">

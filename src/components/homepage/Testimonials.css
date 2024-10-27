@@ -47,7 +47,7 @@
   }
   
   .testimonials__dot--active {
-    background-color: #ffd700;
+    background-color: #ffa500;
   }
   
   .testimonials__arrows {
@@ -67,6 +67,6 @@
   }
   
   .testimonials__arrow:hover {
-    background-color: #ffd700;
+    background-color: #ffa500;
     color: #121212;
   }
