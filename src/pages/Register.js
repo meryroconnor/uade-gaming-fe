@@ -10,15 +10,9 @@ const RegistrationComponent = ({ isOpen, onClose }) => {
     birthDate: '',
     email: '',
     password: '',
+    userType: '',
   });
   
-  const [storeData, setStoreData] = useState({
-    name: '',
-    cuit: '',
-    email: '',
-    password: '',
-  });
-
   // State for error or success messages
   const [message, setMessage] = useState(null);
 
@@ -28,14 +22,6 @@ const RegistrationComponent = ({ isOpen, onClose }) => {
   const handleUserInputChange = (e) => {
     setUserData({
       ...userData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  // Handle input change for store registration
-  const handleStoreInputChange = (e) => {
-    setStoreData({
-      ...storeData,
       [e.target.name]: e.target.value,
     });
   };
@@ -65,40 +51,19 @@ const RegistrationComponent = ({ isOpen, onClose }) => {
       console.log(error);  
     }
   };
-
-  // Submit handler for store registration
-  const handleStoreSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch('http://127.0.0.1:3000/companies/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(storeData),
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        setMessage('Store registration successful!');
-        setStoreData({ storeName: '', cuit: '', email: '', password: '' }); // Reset form
-      } else {
-        setMessage(result.error || 'Store registration failed');
-      }
-    } catch (error) {
-      setMessage('Error occurred during store registration');
-      console.log(error);  
-    }
-  };
-
   return (
     <div className="modal">
       <div className="overlay"></div>
       <div className="registrationContainer">
         <div
           className={`formSection ${activeForm === 'user' ? 'active' : 'inactiveUser'}`}
-          onClick={() => setActiveForm('user')}
+          onClick={() => {
+            setActiveForm('user');
+            setUserData((userData) => ({
+              ...userData,
+              userType: 'customer' 
+            }));             
+          }}
         >
           <h2 className="formTitle">User Sign Up</h2>
           <form className="form" onSubmit={handleUserSubmit}>
@@ -151,7 +116,13 @@ const RegistrationComponent = ({ isOpen, onClose }) => {
         {/* Store registration section */}
         <div
           className={`formSection ${activeForm === 'store' ? 'activeStore' : 'inactiveStore'}`}
-          onClick={() => setActiveForm('store')}
+          onClick={() => {
+            setActiveForm('store');
+            setUserData((userData) => ({
+              ...userData,
+              userType: 'company' 
+            }));             
+          }}
         >
           <button className="close-btn" onClick={onClose}>×</button>
 
@@ -164,37 +135,29 @@ const RegistrationComponent = ({ isOpen, onClose }) => {
           >
             Store Registration
           </h2>
-          <form className="form" onSubmit={handleStoreSubmit}>
+          <form className="form" onSubmit={handleUserSubmit}>
             <input
               type="text"
               name="name"
               placeholder="Store name"
-              value={storeData.storeName}
-              onChange={handleStoreInputChange}
+              value={userData.name}
+              onChange={handleUserInputChange}
               required
-            />
-            <input
-              type="text"
-              name="cuit"
-              placeholder="CUIT"
-              value={storeData.cuit}
-              onChange={handleStoreInputChange}
-              required
-            />
+            />            
             <input
               type="email"
               name="email"
               placeholder="Email"
-              value={storeData.email}
-              onChange={handleStoreInputChange}
+              value={userData.email}
+              onChange={handleUserInputChange}
               required
             />
             <input
               type="password"
               name="password"
               placeholder="Password"
-              value={storeData.password}
-              onChange={handleStoreInputChange}
+              value={userData.password}
+              onChange={handleUserInputChange}
               required
             />
             <button type="submit" className="submitButton">Start selling!</button>

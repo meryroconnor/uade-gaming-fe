@@ -10,12 +10,18 @@ import Login from './pages/Login';
 import { UserProvider } from './userContext'; // Import UserContext
 import useModal from './useModal';
 import './App.css';
+import Carousel from './components/homepage/Carousel';
+import SearchBar from './components/homepage/SearchBar';
+import NavigationIcons from './components/homepage/NavigationIcons';
+import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
+import Testimonials from './components/homepage/Testimonials';
 
 function App() {
   const loginModal = useModal();
   const registerModal = useModal();
 
   return (
+    <UserProvider>
       <Router>
         <div className="App">
           <Navbar 
@@ -42,9 +48,9 @@ function App() {
           <Testimonials />
           
         </div>
-        <Footer />
-      </div>
+        <Footer />   
     </Router>
+    </UserProvider>
   );
 }
 

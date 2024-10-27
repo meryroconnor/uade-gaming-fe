@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Navbar.css';
 import homeIcon from '../images/icons/home.png';
 import cartIcon from '../images/icons/cart.png';
-import fantasmita from '../images/fantasmita_secondary.jpg';
+import fantasmita from '../images/default_user.jpg';
 
 import { useUser } from '../userContext'; // Import User context
 

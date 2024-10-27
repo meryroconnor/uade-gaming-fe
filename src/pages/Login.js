@@ -22,9 +22,7 @@ const LoginComponent = ({ isOpen, onClose }) => {
             asCompany,
         };
 
-        const apiUrl = asCompany 
-            ? 'http://127.0.0.1:3000/companies/login' 
-            : 'http://127.0.0.1:3000/users/login';
+        const apiUrl = 'http://127.0.0.1:3000/users/login';
 
         try {
             const response = await fetch(apiUrl, {
@@ -85,18 +83,6 @@ const LoginComponent = ({ isOpen, onClose }) => {
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
                         />
-                        
-                        <div className="checkboxContainer">
-                            <input 
-                                type="checkbox" 
-                                id="asCompany" 
-                                className="checkbox" 
-                                checked={asCompany} 
-                                onChange={(e) => setAsCompany(e.target.checked)} 
-                            />
-                            <label htmlFor="asCompany" className="checkboxLabel">As a company</label>
-                        </div>
-
                         <button type="submit" className="loginButton">Log in</button>
                     </form>
                     <div className="footer">
