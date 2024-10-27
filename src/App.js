@@ -16,6 +16,7 @@ import NavigationIcons from './components/homepage/NavigationIcons';
 import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
 import Testimonials from './components/homepage/Testimonials';
 
+
 function App() {
   const loginModal = useModal();
   const registerModal = useModal();
@@ -38,10 +39,10 @@ function App() {
           />
           <Hero />
 
-          <div className="search-nav-wrapper">
+          {/* <div className="search-nav-wrapper">
             <SearchBar />
             <NavigationIcons />
-          </div>
+          </div> */}
           <Carousel />
           <Highlights />
           <ImagesPlaceholder />

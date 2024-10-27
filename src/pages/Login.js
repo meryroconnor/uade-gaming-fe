@@ -6,7 +6,6 @@ import { useUser } from '../userContext'; // Import the context
 const LoginComponent = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [asCompany, setAsCompany] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
     const { login } = useUser(); // Use login function from context
@@ -18,8 +17,7 @@ const LoginComponent = ({ isOpen, onClose }) => {
 
         const loginData = {
             email,
-            password,
-            asCompany,
+            password          
         };
 
         const apiUrl = 'http://127.0.0.1:3000/users/login';
@@ -38,9 +36,9 @@ const LoginComponent = ({ isOpen, onClose }) => {
             }
 
             const data = await response.json();
-            console.log('Login successful:', data);
+            console.log('Data:', data.user);
 
-            login(data); // Update user context with the response data
+            login(data.user); // Update user context with the response data
             onClose(); // Close the login modal
         } catch (error) {
             setErrorMessage(error.message); 
