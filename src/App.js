@@ -1,21 +1,34 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Hero from './components/homepage/Hero';
-import SearchBar from './components/homepage/SearchBar';
-import NavigationIcons from './components/homepage/NavigationIcons';
+
 import './App.css';
-import Carousel from './components/homepage/Carousel';
-import ImagesPlaceholder from './components/homepage/ImagesPlaceholder';
+
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Catalog from './pages/Catalog';
-import Game from './components/Game';
-import FilterMenu from './components/FilterMenu';
-import PurchaseTotal from './components/PurchaseTotal';
+
+import UserCover from './components/profile/UserCover'
 import useModal from './useModal';
 import { UserProvider } from './userContext';
+import GameChart from './components/Game';
+import Footer from './components/Footer';
+import Wishlist from './components/profile/Wishlist';
+import ProductView from './components/profile/ProductView';
 
+
+const gameData = {
+  image: "url-to-image",
+  name: "Game Name",
+  releaseDate: "2024-10-19T17:36:58.000Z",
+  developer: "Developer Name",
+  rating: 4,
+  price: 29.99,
+  os: {
+    isApple: true,
+    isMicrosoft: true,
+    isLinux: false
+  }
+};
 
 function App() {
 
@@ -31,9 +44,13 @@ function App() {
           />
           <Register isOpen={registerModal.isOpen} onClose={registerModal.closeModal} />
           <Login isOpen={loginModal.isOpen} onClose={loginModal.closeModal} />
-          {/* <Hero /> */}
-          <Catalog />
+         
+         <UserCover />
+         <ProductView />
+         <Wishlist />
 
+         
+        <Footer />
         </div>
       </Router>
     </UserProvider>
