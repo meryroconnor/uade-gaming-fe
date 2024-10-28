@@ -12,7 +12,11 @@ const GamesList = () => {
     const [games, setGames] = useState([]);
     const [filteredGames, setFilteredGames] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [cart, setCart] = useState([]);
+    const [cart, setCart] = useState(() => {
+        // Load cart from localStorage if it exists
+        const savedCart = localStorage.getItem('cart');
+        return savedCart ? JSON.parse(savedCart) : [];
+    });
 
     const { data, loading, error } = useFetch('http://127.0.0.1:3000/games/');
 
@@ -91,6 +95,12 @@ const GamesList = () => {
     //     console.log(cart)
     //     fetchCart();
     // }, [user]);
+
+    // Save cart to localStorage whenever it changes
+    
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }, [cart]);
 
 
     const addToCart = async (game) => {
