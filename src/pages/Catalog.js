@@ -5,12 +5,14 @@ import GameSearch from '../components/GameSearch';
 import { useFetch } from '../useFetch';
 import Navbar from '../components/Navbar';
 import './Catalog.css';
-
+import { useUser } from '../userContext';
 
 const GamesList = () => {
+    const { user } = useUser();
     const [games, setGames] = useState([]);
     const [filteredGames, setFilteredGames] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
+    const [cart, setCart] = useState([]);
 
     const { data, loading, error } = useFetch('http://127.0.0.1:3000/games/');
 
@@ -41,21 +43,9 @@ const GamesList = () => {
     const [playerMode, setPlayerMode] = useState('');
     const [rating, setRating] = useState('');
 
-    // Reset Filters
-    // const resetFilters = () => {
-    //     setGenre('');
-    //     setOs([]);
-    //     setLanguage([]);
-    //     setPriceFrom('');
-    //     setPriceTo('');
-    //     setPlayerMode('');
-    //     setRating('');
-    // };
-
-
     useEffect(() => {
         if (data) {
-            setGames(data)
+            setGames(data);
         }
     }, [data]);
 
@@ -74,14 +64,105 @@ const GamesList = () => {
         });
         setFilteredGames(filtered);
     }, [games, genre, os, language, priceFrom, priceTo, playerMode, rating, searchQuery]);
-    ;
+
+    // // Fetch the cart
+    // useEffect(() => {
+    //     const fetchCart = async () => {
+    //         if (user && user.token) { // Only fetch if user is logged in
+    //             try {
+    //                 const response = await fetch(`http://127.0.0.1:3000/carts/user/${user.user.id}`, {
+    //                     headers: {
+    //                         'Authorization': `Bearer ${user.token}`,
+    //                     }
+    //                 });
+    //                 if (response.ok) {
+    //                     const cartData = await response.json();
+    //                     setCart(cartData.cartId ? { cartId: cartData.cartId } : {});
+    //                 } else {
+    //                     const errorData = await response.json();
+    //                     alert(`Error fetching cart: ${errorData.error}`);
+    //                 }
+    //             } catch (error) {
+    //                 console.error('Error fetching cart:', error);
+    //                 alert('Failed to fetch cart.');
+    //             }
+    //         }
+    //     };
+    //     console.log(cart)
+    //     fetchCart();
+    // }, [user]);
+
+
+    const addToCart = async (game) => {
+        try {
+            const response = await fetch('http://127.0.0.1:3000/carts/items', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`,
+
+                },
+                body: JSON.stringify({
+                    gameId: game.id,
+                    quantity: 1
+                }),
+            });
+
+
+
+            if (response.ok) {
+                const cartItem = await response.json();
+                setCart((prevCart) => [...prevCart, cartItem]);
+                alert(`${game.name} has been added to your cart!`);
+            } else {
+                const errorData = await response.json();
+                alert(`Error adding to cart: ${errorData.error}`);
+            }
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+            alert('Failed to add item to cart.');
+        }
+    };
+
+    const removeFromCart = async (game) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:3000/carts/${cart.id}/items`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`,
+                },
+                body: JSON.stringify({
+                    // cartId: cart.id,
+                    gameId: game.id,
+                }),
+            });
+
+            if (response.ok) {
+                setCart((prevCart) => prevCart.filter(item => item.gameId !== game.id));
+                alert(`${game.name} has been removed from your cart.`);
+            } else {
+                const errorData = await response.json();
+                alert(`Error removing from cart: ${errorData.error}`);
+            }
+        } catch (error) {
+            console.error('Error removing from cart:', error);
+            alert('Failed to remove item from cart.');
+        }
+    };
+
+    // Helper function to check if game is in cart
+    const isGameInCart = (gameId) => {
+        return cart.some(item => item.gameId === gameId);
+    };
+
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
     return (
         <div className='catalog-body'>
-            < div className='catalog-titles'>
+            <div className='catalog-titles'>
                 <h1>Showing <span className='titleInColor'>({filteredGames.length}) games</span> </h1>
                 <GameSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             </div>
@@ -112,39 +193,33 @@ const GamesList = () => {
                     <div className="catalog-game-cards">
                         {currentItems.map(game => (
                             <div key={game.id} className="game-card">
-                                <Game game={game} />
-                                {console.log(game.rating)}
+                                <Game
+                                    key={game.id}
+                                    game={game}
+                                    variant="catalog"
+                                    onAddToCart={addToCart}
+                                    onRemoveFromCart={removeFromCart}
+                                    isInCart={isGameInCart(game.id)} />
                             </div>
                         ))}
                     </div>
-
-
-
                 </section>
-
-
-
-
-
-
-
             </div>
-            {/* Botones de paginación */}
+
+            {/* Pagination Buttons */}
             <div className="pagination">
-                 <button className='arrowButton' onClick={prevPage} disabled={currentPage === 1}>
+                <button className='arrowButton' onClick={prevPage} disabled={currentPage === 1}>
                     ←
                 </button>
-                
+
                 <button className='arrowButton'
                     onClick={nextPage}
                     disabled={indexOfLastItem >= filteredGames.length}
                 >
                     →
                 </button>
-                   
             </div>
         </div>
-
     );
 };
 

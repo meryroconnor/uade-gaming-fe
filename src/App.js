@@ -15,6 +15,8 @@ import FilterMenu from './components/FilterMenu';
 import PurchaseTotal from './components/PurchaseTotal';
 import useModal from './useModal';
 import { UserProvider } from './userContext';
+import Highlights from './components/homepage/Highlights';
+import Testimonials from './components/homepage/Testimonials';
 
 
 
@@ -38,16 +40,14 @@ function App() {
             isOpen={loginModal.isOpen} 
             onClose={loginModal.closeModal} 
           />
-          <Hero />
-
-          {/* <div className="search-nav-wrapper">
-            <SearchBar />
-            <NavigationIcons />
-          </div> */}
+          {/* <Hero />
+          <SearchBar />
           <Carousel />
           <Highlights />
           <ImagesPlaceholder />
-          <Testimonials />
+          <Testimonials /> */}
+
+          <Catalog />
           
         </div>
 

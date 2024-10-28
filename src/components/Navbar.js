@@ -40,12 +40,6 @@ const Navbar = ({ openLoginModal, openRegisterModal }) => {
             <button onClick={logout} className="logout-btn">
               Sign Out
             </button>
-
-            <img
-              src={user.avatar || fantasmita} // Fallback to a default avatar if user.avatar is not available
-              alt="Avatar"
-              className="avatar"
-            />
             <img
               src={user.avatar || fantasmita} // Fallback to a default avatar if user.avatar is not available
               alt="Avatar"
