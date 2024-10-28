@@ -8,17 +8,24 @@ import './Game.css';
 
 const GameChart = ({ 
   game, 
-  variant = 'catalog', 
+  variant , 
   onSettingsClick,
   isFavorite,
-  onFavoriteClick 
+  onFavoriteClick,
+  onAddToCart,
+  onRemoveFromCart,
+  isInCart
 }) => {
   const date = new Date(game.createdAt).toISOString().split('T')[0];
   const renderButtons = () => {
     if (variant === 'catalog') {
       return (
-        <button className="button">
-          Add <BsCart4 className="icon-right" />
+        <button 
+          className="button" 
+          onClick={() => isInCart ? onRemoveFromCart(game) : onAddToCart(game)}
+          
+        >
+          {isInCart ? "Remove" : "Add"} <BsCart4 className="icon-right" />
         </button>
       );
     } else if (variant === 'profile') {
@@ -36,7 +43,7 @@ const GameChart = ({
     } else if (variant === 'cart') {
       return (
         <div className="button-group">
-          <button className="button">
+          <button className="button" onClick={() => onAddToCart(game)}>
             Add <BsCart4 className="icon-right" />
           </button>
           <button 
@@ -50,6 +57,7 @@ const GameChart = ({
       );
     }
   };
+  
 
   return (
     <div className={`game-container ${variant === 'store' ? 'store-variant' : ''}`}>
@@ -97,7 +105,6 @@ const GameChart = ({
             {game.os.isLinux && <FaLinux className="platform-icon" />}
           </div>
           {renderButtons()}
-
         </div>
       </div>
     </div>

@@ -15,6 +15,9 @@ import FilterMenu from './components/FilterMenu';
 import PurchaseTotal from './components/PurchaseTotal';
 import useModal from './useModal';
 import { UserProvider } from './userContext';
+import Highlights from './components/homepage/Highlights';
+import Testimonials from './components/homepage/Testimonials';
+
 
 
 function App() {
@@ -29,12 +32,25 @@ function App() {
           <Navbar openLoginModal={loginModal.openModal}
             openRegisterModal={registerModal.openModal}
           />
-          <Register isOpen={registerModal.isOpen} onClose={registerModal.closeModal} />
-          <Login isOpen={loginModal.isOpen} onClose={loginModal.closeModal} />
-          {/* <Hero /> */}
-          <Catalog />
+          <Register 
+            isOpen={registerModal.isOpen} 
+            onClose={registerModal.closeModal} 
+          />
+          <Login 
+            isOpen={loginModal.isOpen} 
+            onClose={loginModal.closeModal} 
+          />
+          {/* <Hero />
+          <SearchBar />
+          <Carousel />
+          <Highlights />
+          <ImagesPlaceholder />
+          <Testimonials /> */}
 
+          <Catalog />
+          
         </div>
+
       </Router>
     </UserProvider>
   );

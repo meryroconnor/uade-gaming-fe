@@ -6,7 +6,6 @@ import { useUser } from '../userContext';
 const LoginComponent = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [asCompany, setAsCompany] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const { login } = useUser();
 
@@ -17,14 +16,11 @@ const LoginComponent = ({ isOpen, onClose }) => {
 
         const loginData = {
             email,
-            password,
-            asCompany,
+            password          
         };
 
-        // Choose the appropriate API endpoint based on checkbox status
-        const apiUrl = asCompany
-            ? 'http://127.0.0.1:3000/companies/login'
-            : 'http://127.0.0.1:3000/users/login';
+
+        const apiUrl = 'http://127.0.0.1:3000/users/login';
 
         try {
             const response = await fetch(apiUrl, {
@@ -40,8 +36,10 @@ const LoginComponent = ({ isOpen, onClose }) => {
             }
 
             const data = await response.json();
-            login(data);
-            onClose();
+            console.log('Login successful:', data);
+
+            login(data); // Update user context with the response data
+            onClose(); // Close the login modal
         } catch (error) {
             setErrorMessage(error.message);
         }
@@ -83,17 +81,6 @@ const LoginComponent = ({ isOpen, onClose }) => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-
-                        <div className="checkboxContainer">
-                            <input
-                                type="checkbox"
-                                id="asCompany"
-                                className="checkbox"
-                                checked={asCompany}
-                                onChange={(e) => setAsCompany(e.target.checked)}
-                            />
-                            <label htmlFor="asCompany" className="checkboxLabel">As a company</label>
-                        </div>
 
                         <button type="submit" className="loginButton">Log in</button>
                     </form>
