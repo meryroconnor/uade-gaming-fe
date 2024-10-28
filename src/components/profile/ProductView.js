@@ -11,7 +11,7 @@ const ProductView = () => {
     {
         image: doomEternalImg,
         name: "Game Name",
-        releaseDate: "2024",
+        createdAt: "2024",
         developer: "Developer Name",
         rating: 4,
         price: 29.99,
