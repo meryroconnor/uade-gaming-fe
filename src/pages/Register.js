@@ -31,7 +31,7 @@ const RegistrationComponent = ({ isOpen, onClose }) => {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://127.0.0.1:3000/users/signup', {
+      const response = await fetch('http://127.0.0.1:3001/users/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

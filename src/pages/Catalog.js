@@ -18,7 +18,7 @@ const GamesList = () => {
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
-    const { data, loading, error } = useFetch('http://127.0.0.1:3000/games/');
+    const { data, loading, error } = useFetch('http://127.0.0.1:3001/games/');
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
@@ -69,34 +69,6 @@ const GamesList = () => {
         setFilteredGames(filtered);
     }, [games, genre, os, language, priceFrom, priceTo, playerMode, rating, searchQuery]);
 
-    // // Fetch the cart
-    // useEffect(() => {
-    //     const fetchCart = async () => {
-    //         if (user && user.token) { // Only fetch if user is logged in
-    //             try {
-    //                 const response = await fetch(`http://127.0.0.1:3000/carts/user/${user.user.id}`, {
-    //                     headers: {
-    //                         'Authorization': `Bearer ${user.token}`,
-    //                     }
-    //                 });
-    //                 if (response.ok) {
-    //                     const cartData = await response.json();
-    //                     setCart(cartData.cartId ? { cartId: cartData.cartId } : {});
-    //                 } else {
-    //                     const errorData = await response.json();
-    //                     alert(`Error fetching cart: ${errorData.error}`);
-    //                 }
-    //             } catch (error) {
-    //                 console.error('Error fetching cart:', error);
-    //                 alert('Failed to fetch cart.');
-    //             }
-    //         }
-    //     };
-    //     console.log(cart)
-    //     fetchCart();
-    // }, [user]);
-
-    // Save cart to localStorage whenever it changes
     
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -105,7 +77,7 @@ const GamesList = () => {
 
     const addToCart = async (game) => {
         try {
-            const response = await fetch('http://127.0.0.1:3000/carts/items', {
+            const response = await fetch('http://127.0.0.1:3001/carts/items', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -136,7 +108,7 @@ const GamesList = () => {
 
     const removeFromCart = async (game) => {
         try {
-            const response = await fetch(`http://127.0.0.1:3000/carts/${cart.id}/items`, {
+            const response = await fetch(`http://127.0.0.1:3001/carts/${cart.id}/items`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',

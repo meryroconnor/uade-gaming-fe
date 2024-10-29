@@ -47,7 +47,8 @@ function App() {
           <ImagesPlaceholder />
           <Testimonials /> */}
 
-          <Catalog />
+          {/* <Catalog /> */}
+          
           
         </div>
 
