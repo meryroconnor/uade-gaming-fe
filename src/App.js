@@ -17,6 +17,7 @@ import useModal from './useModal';
 import { UserProvider } from './userContext';
 import Highlights from './components/homepage/Highlights';
 import Testimonials from './components/homepage/Testimonials';
+import Cart from './pages/Cart';
 
 
 
@@ -48,7 +49,7 @@ function App() {
           <Testimonials /> */}
 
           {/* <Catalog /> */}
-          
+          <Cart />
           
         </div>
 

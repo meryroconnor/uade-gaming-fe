@@ -75,6 +75,7 @@ const GamesList = () => {
     }, [cart]);
 
 
+
     const addToCart = async (game) => {
         try {
             const response = await fetch('http://127.0.0.1:3001/carts/items', {
