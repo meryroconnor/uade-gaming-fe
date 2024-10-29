@@ -43,8 +43,11 @@ const GameChart = ({
     } else if (variant === 'cart') {
       return (
         <div className="button-group">
-          <button className="button" onClick={() => onAddToCart(game)}>
-            Add <BsCart4 className="icon-right" />
+          <button 
+          className="button" 
+          onClick={() => onRemoveFromCart(game)}          
+        >
+            Remove <BsCart4 className="icon-right" />
           </button>
           <button 
             className="favorite-button"

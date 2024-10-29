@@ -1,7 +1,7 @@
 import React from 'react';
 import './PurchaseTotal.css'; 
 
-const PurchaseTotal = ({ productCount = 4, productTotal = 80.00, discount = 0.00 }) => {
+const PurchaseTotal = ({ productCount, productTotal = 80.00, discount = 0.00 }) => {
   const total = productTotal - discount;
 
   return (
