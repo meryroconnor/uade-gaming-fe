@@ -59,6 +59,7 @@ const Cart = () => {
         fetchCart();
     }, [user]);
     
+    
     // Fetch game details whenever the cart changes
     useEffect(() => {
         const fetchGameDetails = async () => {
