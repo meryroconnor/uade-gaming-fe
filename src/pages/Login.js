@@ -38,7 +38,8 @@ const LoginComponent = ({ isOpen, onClose }) => {
             const data = await response.json();
             console.log('Login successful:', data);
 
-            login(data); // Update user context with the response data
+            login(data);
+            console.log(data) // Update user context with the response data
             onClose(); // Close the login modal
         } catch (error) {
             setErrorMessage(error.message);

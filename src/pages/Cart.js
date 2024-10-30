@@ -34,12 +34,15 @@ const Cart = () => {
                 try {
                     const userId = user.user.id;
                     const token = user.token;
-
-                    const response = await axios.get(`http://127.0.0.1:3001/carts/${userId}`, {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    });
+    
+                    const response = await axios.post(`http://127.0.0.1:3001/carts/`, 
+                        { userId },  // Send userId in the request body
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
                     setCart(response.data);                    
                 } catch (err) {
                     setError('Error fetching cart data');
@@ -52,11 +55,10 @@ const Cart = () => {
                 localStorage.removeItem('cart');
             }            
         };
-
-        
+    
         fetchCart();
-    }, [user]); // Add `user` as a dependency
-
+    }, [user]);
+    
     // Fetch game details whenever the cart changes
     useEffect(() => {
         const fetchGameDetails = async () => {
