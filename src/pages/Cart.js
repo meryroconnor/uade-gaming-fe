@@ -13,6 +13,7 @@ const Cart = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [wishlist, setWishlist] = useState([]);
+    const [wishlistItems, setWishlistItems] = useState([]);
 
 
     const [cart, setCart] = useState(() => {
@@ -59,11 +60,6 @@ const Cart = () => {
             }
         };
 
-        fetchCart();
-    }, [user]);
-
-    // Fetch game details whenever the cart changes
-    useEffect(() => {
         const fetchGameDetails = async () => {
             setLoading(true);
             try {
@@ -88,7 +84,10 @@ const Cart = () => {
             setGames([]); // Empty the games if the cart is empty
         }
 
+        fetchCart();
+
     }, [user]);
+
 
     const removeFromCart = async (game) => {
         try {
@@ -122,12 +121,10 @@ const Cart = () => {
     };
 
 
-    // Add to wishlist
     const addToWishlist = async (game) => {
         try {
             const response = await axios.post(`http://127.0.0.1:3001/wishlists/items`, {
                 gameId: game.id,
-                
             }, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`,
@@ -136,16 +133,16 @@ const Cart = () => {
 
             if (response.status === 201) {
                 alert(`${game.name} has been added to your wishlist.`);
-            }
-            
+                // Update wishlistItems state
+                setWishlistItems(prevItems => [...prevItems, game.id]);
+            }        
         } catch (error) {
-            console.log(game.id)
+            console.log(game.id);
             console.log(error);
             setError('Failed to add item to wishlist.');
         }
     };
 
-    // Remove from wishlist
     const removeFromWishlist = async (game) => {
         try {
             const response = await axios.delete(`http://127.0.0.1:3001/wishlists/items`, {
@@ -159,12 +156,15 @@ const Cart = () => {
 
             if (response.status === 204) {
                 alert(`${game.name} has been removed from your wishlist.`);
+                // Update wishlistItems state
+                setWishlistItems(prevItems => prevItems.filter(id => id !== game.id));
             }
         } catch (error) {
             console.error('Error removing from wishlist:', error);
             setError('Failed to remove item from wishlist.');
         }
     };
+
 
 
 
