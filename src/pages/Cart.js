@@ -145,7 +145,7 @@ const Cart = () => {
 
     const removeFromWishlist = async (game) => {
         try {
-            const response = await axios.delete(`http://127.0.0.1:3001/wishlists/items`, {
+            const response = await axios.delete(`http://127.0.0.1:3001/wishlists/items/${game.id}`, {
                 headers: {
                     'Authorization': `Bearer ${user.token}`,
                 },
@@ -153,6 +153,8 @@ const Cart = () => {
                     gameId: game.id,
                 },
             });
+
+            console.log(game.id);
 
             if (response.status === 204) {
                 alert(`${game.name} has been removed from your wishlist.`);
@@ -188,9 +190,9 @@ const Cart = () => {
                                     game={game}
                                     variant="cart"
                                     onRemoveFromCart={removeFromCart}
-                                    onAddToWishlist={addToWishlist} // Make sure this is correctly passed
-                                    onRemoveFromWishlist={removeFromWishlist} // And this too
-                                    isInWishlist={wishlist.includes(game.id)} // Example check to see if the game is in wishlist
+                                    onAddToWishlist={addToWishlist} 
+                                    onRemoveFromWishlist={removeFromWishlist} 
+                                    isFavorite={wishlistItems.includes(game.id)} 
                                 />
 
                             </div>

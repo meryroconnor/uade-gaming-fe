@@ -11,13 +11,12 @@ const GameChart = ({
   variant , 
   onSettingsClick,
   isFavorite,
-  onFavoriteClick,
   onAddToCart,
   onRemoveFromCart,
   isInCart,
   onAddToWishlist ,
   onRemoveFromWishlist,
-  isInWishlist,
+  
 
 }) => {
   const date = new Date(game.createdAt).toISOString().split('T')[0];
@@ -55,7 +54,7 @@ const GameChart = ({
           </button>
           <button 
             className="favorite-button"
-            onClick={() => isInWishlist ? onRemoveFromWishlist(game) : onAddToWishlist(game)}
+            onClick={() => isFavorite ? onRemoveFromWishlist(game) : onAddToWishlist(game)}
             aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
           >
             {isFavorite ? <AiFillHeart /> : <AiOutlineHeart />}
