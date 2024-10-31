@@ -74,7 +74,7 @@ const GamesList = () => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
 
-
+    
 
     const addToCart = async (game) => {
         try {
