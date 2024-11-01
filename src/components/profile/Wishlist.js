@@ -13,21 +13,18 @@ import tombRaiderImg from '../../images/games/tomb_raider.jpg';
 import granTurismo7Img from '../../images/games/turismo.jpg';
 
 const Wishlist = (
-  itemsGames,
+  games,
+  wishlistItems,
   onAddToCart,
   onRemoveFromCart,
   isInCart,
 ) => {
-  const games = [
-    { id: 1, title: "Zelda", image: doomEternalImg, price: 10.00, rating: 4.5 },
-    { id: 2, title: "Resident Evil", image: residentEvilImg, price: 15.55, rating: 3.9 },
-    { id: 3, title: "Forza Horizon 4", image: forzaHorizon4Img, price: 22.00, rating: 4.6 },
-    { id: 4, title: "Silent Hill 2", image: silentHill2Img, price: 25.00, rating: 4.1 },
-    { id: 5, title: "Age of Empires", image: ageOfEmpiresImg, price: 24.00, rating: 4.2 },
-    { id: 6, title: "Hell Drivers", image: horizonImg, price: 16.60, rating: 4.0 },
-    { id: 7, title: "Tomb Raider", image: tombRaiderImg, price: 21.00, rating: 4.0 },
-    { id: 8, title: "Gran Turismo 7", image: granTurismo7Img, price: 18.50, rating: 5.0 },
-  ];
+
+  const isGameInWishlist = (gameId) => {
+    // Assuming wishlistItems is an array of items
+    return wishlistItems && wishlistItems.some(item => item.gameId === gameId);
+  };
+
 
 
   return (
@@ -35,19 +32,22 @@ const Wishlist = (
       <h2 className="highlights__title">♡ Wishlist</h2>
 
 
-      {/* <div className="highlights__games">
-        {games.map(game => (
-          <GameCardSm
-            key={game.id}
-            title={game.title}
-            image={game.image}
-            price={game.price}
-            rating={game.rating}
-          />
-        ))}
-      </div> */}
+      <div className="highlights__games">
+        {/* {games
+          .filter(game => isGameInWishlist(game.id))
+          .map(game => (
+            <GameCardSm
+              key={game.id}
+              title={game.title}
+              image={game.image}
+              price={game.price}
+              rating={game.rating}
+            />
+          ))} */}
+      </div>
 
-      
+
+
     </div>
   );
 };

@@ -2,23 +2,18 @@ import React, { useState, useEffect } from 'react';
 import FilterMenu from '../components/FilterMenu';
 import Game from '../components/Game';
 import GameSearch from '../components/GameSearch';
-import { useFetch } from '../useFetch';
-import Navbar from '../components/Navbar';
-import './Catalog.css';
 import { useUser } from '../userContext';
+import axios from 'axios';
+import './Catalog.css';
 
 const GamesList = () => {
-    const { user } = useUser();
-    const [games, setGames] = useState([]);
     const [filteredGames, setFilteredGames] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [cart, setCart] = useState(() => {
-        // Load cart from localStorage if it exists
-        const savedCart = localStorage.getItem('cart');
-        return savedCart ? JSON.parse(savedCart) : [];
-    });
-
-    const { data, loading, error } = useFetch('http://127.0.0.1:3001/games/');
+    const { user } = useUser();
+    const [games, setGames] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [cart, setCart] = useState([]); // Initialize as an empty array
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
@@ -47,12 +42,46 @@ const GamesList = () => {
     const [playerMode, setPlayerMode] = useState('');
     const [rating, setRating] = useState('');
 
+    // Fetch data on component mount
     useEffect(() => {
-        if (data) {
-            setGames(data);
-        }
-    }, [data]);
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                // Load cart from local storage if not logged in
+                if (!user) {
+                    const storedCart = localStorage.getItem('cart');
+                    setCart(storedCart ? JSON.parse(storedCart) : []);
+                    setLoading(false);
+                    return;
+                }
 
+                const userId = user.user.id;
+                const token = user.token;
+
+                // Fetch cart data from the server
+                const cartResponse = await axios.post(`http://127.0.0.1:3001/carts/`, { userId }, {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                
+                const fetchedCart = Array.isArray(cartResponse.data) ? cartResponse.data : [];
+                setCart(fetchedCart);
+                localStorage.setItem('cart', JSON.stringify(fetchedCart)); // Persist to local storage
+
+                // Fetch game details
+                const gamesResponse = await axios.get('http://127.0.0.1:3001/games/');
+                setGames(gamesResponse.data);
+            } catch (err) {
+                setError('Error fetching data');
+                console.error(err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [user]); 
+
+    // Filter games based on criteria
     useEffect(() => {
         const filtered = games.filter(game => {
             return (
@@ -63,19 +92,13 @@ const GamesList = () => {
                 (!priceFrom || game.price >= Number(priceFrom)) &&
                 (!priceTo || game.price <= Number(priceTo)) &&
                 (!playerMode || game.playerMode.toLowerCase().includes(playerMode.toLowerCase())) &&
-                (!rating || game.rating == Number(rating))
+                (!rating || game.rating === Number(rating))
             );
         });
         setFilteredGames(filtered);
     }, [games, genre, os, language, priceFrom, priceTo, playerMode, rating, searchQuery]);
 
-    
-    useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cart));
-    }, [cart]);
-
-    
-
+    // Add item to cart
     const addToCart = async (game) => {
         try {
             const response = await fetch('http://127.0.0.1:3001/carts/items', {
@@ -83,19 +106,17 @@ const GamesList = () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${user.token}`,
-
                 },
-                body: JSON.stringify({
-                    gameId: game.id,
-                    quantity: 1
-                }),
+                body: JSON.stringify({ gameId: game.id, quantity: 1 }),
             });
-
-
 
             if (response.ok) {
                 const cartItem = await response.json();
-                setCart((prevCart) => [...prevCart, cartItem]);
+                setCart((prevCart) => {
+                    const updatedCart = [...prevCart, cartItem];
+                    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update local storage
+                    return updatedCart;
+                });
                 alert(`${game.name} has been added to your cart!`);
             } else {
                 const errorData = await response.json();
@@ -107,6 +128,7 @@ const GamesList = () => {
         }
     };
 
+    // Remove item from cart
     const removeFromCart = async (game) => {
         try {
             const response = await fetch(`http://127.0.0.1:3001/carts/${cart.id}/items`, {
@@ -115,14 +137,15 @@ const GamesList = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${user.token}`,
                 },
-                body: JSON.stringify({
-                    // cartId: cart.id,
-                    gameId: game.id,
-                }),
+                body: JSON.stringify({ gameId: game.id }),
             });
 
             if (response.ok) {
-                setCart((prevCart) => prevCart.filter(item => item.gameId !== game.id));
+                setCart((prevCart) => {
+                    const updatedCart = prevCart.filter(item => item.gameId !== game.id);
+                    localStorage.setItem('cart', JSON.stringify(updatedCart)); // Update local storage
+                    return updatedCart;
+                });
                 alert(`${game.name} has been removed from your cart.`);
             } else {
                 const errorData = await response.json();
@@ -136,9 +159,8 @@ const GamesList = () => {
 
     // Helper function to check if game is in cart
     const isGameInCart = (gameId) => {
-        return cart.some(item => item.gameId === gameId);
+        return Array.isArray(cart) && cart.some(item => item.gameId === gameId);
     };
-
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
@@ -146,7 +168,7 @@ const GamesList = () => {
     return (
         <div className='catalog-body'>
             <div className='catalog-titles'>
-                <h1>Showing <span className='titleInColor'>({filteredGames.length}) games</span> </h1>
+                <h1>Showing <span className='titleInColor'>({filteredGames.length}) games</span></h1>
                 <GameSearch searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
             </div>
 
@@ -177,7 +199,6 @@ const GamesList = () => {
                         {currentItems.map(game => (
                             <div key={game.id} className="game-card">
                                 <Game
-                                    key={game.id}
                                     game={game}
                                     variant="catalog"
                                     onAddToCart={addToCart}

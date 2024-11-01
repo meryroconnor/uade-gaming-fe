@@ -50,11 +50,11 @@ function App() {
           <ImagesPlaceholder />
           <Testimonials /> */}
 
-          {/* <Catalog /> */}
+          <Catalog />
           {/* <Cart /> */}
           {/* <Buyout/> */}
 
-          <UserProfile />
+          {/* <UserProfile /> */}
         </div>
 
       </Router>
