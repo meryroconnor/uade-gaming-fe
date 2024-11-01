@@ -12,7 +12,12 @@ import horizonImg from '../../images/games/helldivers.jpg';
 import tombRaiderImg from '../../images/games/tomb_raider.jpg';
 import granTurismo7Img from '../../images/games/turismo.jpg';
 
-const Wishlist = () => {
+const Wishlist = (
+  itemsGames,
+  onAddToCart,
+  onRemoveFromCart,
+  isInCart,
+) => {
   const games = [
     { id: 1, title: "Zelda", image: doomEternalImg, price: 10.00, rating: 4.5 },
     { id: 2, title: "Resident Evil", image: residentEvilImg, price: 15.55, rating: 3.9 },
@@ -24,12 +29,13 @@ const Wishlist = () => {
     { id: 8, title: "Gran Turismo 7", image: granTurismo7Img, price: 18.50, rating: 5.0 },
   ];
 
+
   return (
     <div className="highlights">
       <h2 className="highlights__title">♡ Wishlist</h2>
 
 
-      <div className="highlights__games">
+      {/* <div className="highlights__games">
         {games.map(game => (
           <GameCardSm
             key={game.id}
@@ -39,7 +45,9 @@ const Wishlist = () => {
             rating={game.rating}
           />
         ))}
-      </div>
+      </div> */}
+
+      
     </div>
   );
 };

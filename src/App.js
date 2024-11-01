@@ -18,7 +18,9 @@ import { UserProvider } from './userContext';
 import Highlights from './components/homepage/Highlights';
 import Testimonials from './components/homepage/Testimonials';
 import Cart from './pages/Cart';
+import Buyout from './components/Buyout';
 
+import UserProfile from './pages/UserProfile';
 
 
 function App() {
@@ -49,8 +51,10 @@ function App() {
           <Testimonials /> */}
 
           {/* <Catalog /> */}
-          <Cart />
-          
+          {/* <Cart /> */}
+          {/* <Buyout/> */}
+
+          <UserProfile />
         </div>
 
       </Router>

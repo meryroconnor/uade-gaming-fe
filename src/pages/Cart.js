@@ -29,7 +29,6 @@ const Cart = () => {
 
     });
 
-
     // Fetch the cart data on component mount
     useEffect(() => {
         const fetchCart = async () => {
