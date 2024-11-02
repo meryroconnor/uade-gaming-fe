@@ -14,79 +14,104 @@ const Cart = () => {
     const [error, setError] = useState(null);
     const [wishlist, setWishlist] = useState([]);
     const [wishlistItems, setWishlistItems] = useState([]);
+    const [cartItems, setCartItems] = useState([]);
 
 
-    const [cart, setCart] = useState(() => {
-        const savedCart = localStorage.getItem('cart');
-        try {
-            const parsedCart = savedCart ? JSON.parse(savedCart) : [];
-            return Array.isArray(parsedCart) ? parsedCart : [];
+    const [cart, setCart] = useState({ items: [], totalPrice: 0 });
 
-        } catch (error) {
-            console.error('Error parsing cart data from localStorage:', error);
-            return [];
-        }
-
-    });
-
-    // Fetch the cart data on component mount
+    // Save cart to localStorage whenever it changes
     useEffect(() => {
-        const fetchCart = async () => {
-            if (user) {
-                setLoading(true);
-                try {
-                    const userId = user.user.id;
-                    const token = user.token;
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }, [cart]);
 
-                    const response = await axios.post(`http://127.0.0.1:3001/carts/`,
-                        { userId },  // Send userId in the request body
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
-                        }
-                    );
-                    setCart(response.data);
-                } catch (err) {
-                    setError('Error fetching cart data');
-                } finally {
-                    setLoading(false);
-                }
-            } else {
-                // User is logged out, clear the cart
+    const fetchData = async () => {
+        if (!user) {
+            setCart({ items: [], totalPrice: 0 }); // Reset the cart to empty
+            localStorage.removeItem('cart');
+            setLoading(false);
+            return;
+        }
+    
+        setLoading(true);
+        try {
+            const userId = user.user.id;
+            const token = user.token;
+    
+            // Fetch cart data
+            const cartResponse = await axios.post(`http://127.0.0.1:3001/carts`, { userId }, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setCart(cartResponse.data);
+    
+            // Fetch game details
+            const gamesResponse = await axios.get('http://127.0.0.1:3001/games/');
+            setGames(gamesResponse.data);
+    
+            // Fetch wishlist items
+            const wishlistResponse = await axios.get(`http://127.0.0.1:3001/wishlists/items/all`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            setWishlistItems(wishlistResponse.data);
+    
+            // Fetch cart items
+            const cartItemsResponse = await fetch('http://127.0.0.1:3001/carts/items', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+    
+            // Check if the response is ok before processing
+            if (!cartItemsResponse.ok) {
+                throw new Error('Failed to fetch cart items');
+            }
+    
+            // Parse the response to JSON
+            const cartItemsData = await cartItemsResponse.json();
+            setCartItems(cartItemsData);
+    
+        } catch (err) {
+            setError('Error fetching data');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+
+    // Fetch data on component mount
+    useEffect(() => {
+        fetchData();
+    }, [user]);
+
+
+    // Function to create a new order
+    const createOrder = async () => {
+        if (!user) return;
+
+        try {
+            const token = user.token;
+            const totalPrice = cart.totalPrice;
+            const orderData = {
+                games: cart.map(item => ({ gameId: item.gameId, quantity: item.quantity })),
+                totalPrice,
+            };
+
+            const response = await axios.post('http://127.0.0.1:3001/orders', orderData, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (response.status === 201) {
+                alert('Order placed successfully!');
                 setCart([]);
                 localStorage.removeItem('cart');
             }
-        };
-
-        const fetchGameDetails = async () => {
-            setLoading(true);
-            try {
-                const gameIds = cart.map(item => item.gameId);
-                const gameDetails = await Promise.all(
-                    gameIds.map(async id => {
-                        const response = await axios.get(`http://127.0.0.1:3001/games/${id}`);
-                        return response.data;
-                    })
-                );
-                setGames(gameDetails);
-            } catch (err) {
-                setError('Error fetching game details');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (cart.length > 0) {
-            fetchGameDetails();
-        } else {
-            setGames([]); // Empty the games if the cart is empty
+        } catch (error) {
+            console.error('Error creating order:', error);
+            setError('Failed to create order.');
         }
-
-        fetchCart();
-
-    }, [user]);
-
+    };
 
     const removeFromCart = async (game) => {
         try {
@@ -134,7 +159,7 @@ const Cart = () => {
                 alert(`${game.name} has been added to your wishlist.`);
                 // Update wishlistItems state
                 setWishlistItems(prevItems => [...prevItems, game.id]);
-            }        
+            }
         } catch (error) {
             console.log(game.id);
             console.log(error);
@@ -167,6 +192,10 @@ const Cart = () => {
     };
 
 
+    // Helper function to check if a game is in cart
+    const isGameInCart = (gameId) => {
+        return cartItems.some(item => item.gameId === gameId);
+    };
 
 
     if (loading) return <p>Loading...</p>;
@@ -175,33 +204,34 @@ const Cart = () => {
     return (
         <div className="cart-body">
             < div className='cart-titles'>
-                <h2><span className='titleInColor'>({games.length}) Products</span> </h2>
+                <h2><span className='titleInColor'>({cartItems.length}) Products</span> </h2>
             </div>
 
             <div className="cart-grid-container">
                 {/* Game Cart */}
                 <section className="cart-grid">
                     <div className="cart-game-cards">
-                        {games.map(game => (
-                            <div key={game.id} className="game-card">
-                                <Game
-                                    key={game.id}
-                                    game={game}
-                                    variant="cart"
-                                    onRemoveFromCart={removeFromCart}
-                                    onAddToWishlist={addToWishlist} 
-                                    onRemoveFromWishlist={removeFromWishlist} 
-                                    isFavorite={wishlistItems.includes(game.id)} 
-                                />
-
-                            </div>
-                        ))}
+                        {/* {games
+                            .filter(game => isGameInCart(game.id)) // Filter games that are in the cart
+                            .map(game => (
+                                <div key={game.id} className="game-card">
+                                    <Game
+                                        key={game.id}
+                                        game={game}
+                                        variant="cart"
+                                        onRemoveFromCart={removeFromCart}
+                                        onAddToWishlist={addToWishlist}
+                                        onRemoveFromWishlist={removeFromWishlist}
+                                        isFavorite={wishlistItems.includes(game.id)}
+                                    />
+                                </div>
+                            ))} */}
                     </div>
                 </section>
 
                 <aside className="cart-sidebar">
-                    <PurchaseTotal productCount={games.length} productTotal={cart.totalPrice} />
-
+                    <PurchaseTotal productCount={games.length} productTotal={cart.totalPrice}
+                        cart={cart} createOrder={createOrder} />
 
                 </aside>
             </div>

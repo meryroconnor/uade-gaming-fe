@@ -51,10 +51,10 @@ function App() {
           <Testimonials /> */}
 
           {/* <Catalog /> */}
-          {/* <Cart /> */}
+          <Cart />
           {/* <Buyout/> */}
 
-          <UserProfile />
+          {/* <UserProfile /> */}
         </div>
 
       </Router>

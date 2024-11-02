@@ -1,13 +1,19 @@
 import React from 'react';
-import './PurchaseTotal.css'; 
+import './PurchaseTotal.css';
 
-const PurchaseTotal = ({ productCount, productTotal = 80.00, discount = 0.00 }) => {
+const PurchaseTotal = ({
+  productCount,
+  productTotal,
+  discount = 0.00,
+  createOrder,
+  cart
+}) => {
   const total = productTotal - discount;
 
   return (
     <div className="purchase-total-card">
       <h4>PURCHASE TOTAL</h4>
-      
+
       <div className="details">
         <div className="detail-item">
           <span>Products ({productCount})</span>

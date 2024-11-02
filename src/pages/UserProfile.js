@@ -13,6 +13,7 @@ const UserProfile = () => {
     const { user } = useUser();
     const [games, setGames] = useState([]);
     const [wishlistItems, setWishlistItems] = useState([]);
+    const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [cart, setCart] = useState([]);
@@ -35,8 +36,7 @@ const UserProfile = () => {
             const userResponse = await axios.get(`http://127.0.0.1:3001/profile`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            setProfile(userResponse.data); 
-            console.log(userResponse.data);
+            setProfile(userResponse.data);            
 
             // Fetch cart data
             const cartResponse = await axios.post(`http://127.0.0.1:3001/carts`, { userId }, {
@@ -52,8 +52,21 @@ const UserProfile = () => {
             const wishlistResponse = await axios.get(`http://127.0.0.1:3001/wishlists/items/all`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-            
+
             setWishlistItems(wishlistResponse.data);
+
+            // Fetch cartGames
+            const cartItemsResponse = await fetch('http://127.0.0.1:3001/carts/user/items', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`, // Attach user token for authentication
+                },
+            });
+
+            setCartItems(cartItemsResponse);
+
+
         } catch (err) {
             setError('Error fetching data');
             console.error(err);
