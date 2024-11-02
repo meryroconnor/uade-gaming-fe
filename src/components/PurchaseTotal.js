@@ -6,7 +6,8 @@ const PurchaseTotal = ({
   productTotal,
   discount = 0.00,
   createOrder,
-  cart
+  cart,
+  cartItems
 }) => {
   const total = productTotal - discount;
 

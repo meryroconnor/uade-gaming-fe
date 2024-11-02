@@ -211,7 +211,7 @@ const Cart = () => {
                 {/* Game Cart */}
                 <section className="cart-grid">
                     <div className="cart-game-cards">
-                        {/* {games
+                        {games
                             .filter(game => isGameInCart(game.id)) // Filter games that are in the cart
                             .map(game => (
                                 <div key={game.id} className="game-card">
@@ -225,13 +225,13 @@ const Cart = () => {
                                         isFavorite={wishlistItems.includes(game.id)}
                                     />
                                 </div>
-                            ))} */}
+                            ))}
                     </div>
                 </section>
 
                 <aside className="cart-sidebar">
-                    <PurchaseTotal productCount={games.length} productTotal={cart.totalPrice}
-                        cart={cart} createOrder={createOrder} />
+                    <PurchaseTotal productCount={cartItems.length} productTotal={cart.totalPrice}
+                        cart={cart} createOrder={createOrder} cartItems={cartItems} />
 
                 </aside>
             </div>
