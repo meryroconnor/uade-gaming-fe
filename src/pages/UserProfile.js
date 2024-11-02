@@ -47,6 +47,7 @@ const UserProfile = () => {
                 const wishlistResponse = await axios.get(`http://127.0.0.1:3001/wishlists/items/all`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
+                console.log(wishlistResponse.data);
                 setWishlistItems(wishlistResponse.data);
             } catch (err) {
                 setError('Error fetching data');
@@ -57,7 +58,7 @@ const UserProfile = () => {
         };
 
         fetchData();
-    }, [user,cart]);
+    }, [user]);
 
   
     return (
