@@ -204,6 +204,7 @@ const Cart = () => {
         return cartItems.some(item => item.gameId === gameId);
     };
 
+    // Helper function to check if a game is in wishlist
     const isInWishlist = (gameId) => {
         return wishlistItems.some(item => item.gameId === gameId);
     };

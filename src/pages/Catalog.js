@@ -71,67 +71,6 @@ const GamesList = () => {
     }, [cart]);
 
 
-
-    // const addToCart = async (game) => {
-    //     try {
-    //         const response = await fetch('http://127.0.0.1:3001/carts/items', {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${user.token}`,
-
-    //             },
-    //             body: JSON.stringify({
-    //                 gameId: game.id,
-    //                 quantity: 1
-    //             }),
-    //         });
-
-
-
-    //         if (response.ok) {
-    //             const cartItem = await response.json();
-    //             setCart((prevCart) => [...prevCart, cartItem]);
-    //             alert(`${game.name} has been added to your cart!`);
-    //         } else {
-    //             const errorData = await response.json();
-    //             alert(`Error adding to cart: ${errorData.error}`);
-    //         }
-    //     } catch (error) {
-    //         console.error('Error adding to cart:', error);
-    //         alert('Failed to add item to cart.');
-    //     }
-    // };
-
-    // const removeFromCart = async (game) => {
-    //     try {
-    //         const response = await fetch(`http://127.0.0.1:3001/carts/${cart.id}/items`, {
-    //             method: 'DELETE',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer ${user.token}`,
-    //             },
-    //             body: JSON.stringify({
-    //                 // cartId: cart.id,
-    //                 gameId: game.id,
-    //             }),
-    //         });
-
-    //         if (response.ok) {
-    //             setCart((prevCart) => prevCart.filter(item => item.gameId !== game.id));
-    //             alert(`${game.name} has been removed from your cart.`);
-    //         } else {
-    //             const errorData = await response.json();
-    //             alert(`Error removing from cart: ${errorData.error}`);
-    //         }
-    //     } catch (error) {
-    //         console.error('Error removing from cart:', error);
-    //         alert('Failed to remove item from cart.');
-    //     }
-    // };
-
-    // Helper function to check if game is in cart
-
     const addToCart = async (game) => {
         try {
             const response = await fetch('http://127.0.0.1:3001/carts/items', {

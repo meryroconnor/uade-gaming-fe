@@ -19,9 +19,10 @@ const UserProfile = () => {
     const [cart, setCart] = useState([]);
     const [profile, setProfile] = useState([]);
 
+
     const fetchData = async () => {
         if (!user) {
-            setCart([]);
+            setCart({ items: [], totalPrice: 0 }); // Reset the cart to empty
             localStorage.removeItem('cart');
             setLoading(false);
             return;
@@ -36,7 +37,8 @@ const UserProfile = () => {
             const userResponse = await axios.get(`http://127.0.0.1:3001/profile`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            setProfile(userResponse.data);            
+            setProfile(userResponse.data);
+
 
             // Fetch cart data
             const cartResponse = await axios.post(`http://127.0.0.1:3001/carts`, { userId }, {
@@ -45,27 +47,28 @@ const UserProfile = () => {
             setCart(cartResponse.data);
 
             // Fetch game details
-            const gamesResponse = await axios.get('http://127.0.0.1:3001/games/');
+            const gamesResponse = await axios.get('http://127.0.0.1:3001/games/');            
             setGames(gamesResponse.data);
 
-            // Fetch wishlist items
-            const wishlistResponse = await axios.get(`http://127.0.0.1:3001/wishlists/items/all`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
 
-            setWishlistItems(wishlistResponse.data);
 
-            // Fetch cartGames
-            const cartItemsResponse = await fetch('http://127.0.0.1:3001/carts/user/items', {
+            // Fetch cart items
+            const cartItemsResponse = await fetch('http://127.0.0.1:3001/carts/items', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${user.token}`, // Attach user token for authentication
+                    'Authorization': `Bearer ${token}`,
                 },
             });
 
-            setCartItems(cartItemsResponse);
+            // Check if the response is ok before processing
+            if (!cartItemsResponse.ok) {
+                throw new Error('Failed to fetch cart items');
+            }
 
+            // Parse the response to JSON
+            const cartItemsData = await cartItemsResponse.json();
+            setCartItems(cartItemsData);
 
         } catch (err) {
             setError('Error fetching data');
@@ -75,18 +78,125 @@ const UserProfile = () => {
         }
     };
 
+    // Function to fetch wishlist items 
+    const wishlistResponse = async () => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:3001/wishlists/items/all`, {
+                headers: { Authorization: `Bearer ${user.token}` },
+            });
+            console.log(response.data);
+            setWishlistItems(response.data);
+        } catch (error) {
+            console.error("Error fetching wishlist items:", error);
+            throw error;
+        }
+    }
 
     // Fetch data on component mount
     useEffect(() => {
         fetchData();
+        localStorage.setItem('cart', JSON.stringify(cart));
     }, [user]);
+
+    // Ensure wishlistResponse fetches the latest items when `wishlistItems` changes
+    useEffect(() => {
+        wishlistResponse();
+        localStorage.setItem('wishlistItems', JSON.stringify(wishlistItems));
+    }, [user]);
+
+
+    const addToCart = async (game) => {
+        try {
+            const response = await fetch('http://127.0.0.1:3001/carts/items', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`,
+                },
+                body: JSON.stringify({
+                    gameId: game.id,
+                    quantity: 1,
+                }),
+            });
+
+            if (response.ok) {
+                const cartItem = await response.json();
+                setCart((prevCart) => {
+                    const updatedItems = [...prevCart.items, cartItem];
+                    const updatedTotalPrice = updatedItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+                    return {
+                        ...prevCart,
+                        items: updatedItems,
+                        totalPrice: updatedTotalPrice,
+                    };
+                });
+                alert(`${game.name} has been added to your cart!`);
+            } else {
+                const errorData = await response.json();
+                alert(`Error adding to cart: ${errorData.error}`);
+            }
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+            alert('Failed to add item to cart.');
+        }
+    };
+
+    const removeFromCart = async (game) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:3001/carts/${cart.id}/items`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`,
+                },
+                body: JSON.stringify({
+                    gameId: game.id,
+                }),
+            });
+
+            if (response.ok) {
+                setCart((prevCart) => {
+                    const updatedItems = prevCart.items.filter(item => item.gameId !== game.id);
+                    const updatedTotalPrice = updatedItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+                    return {
+                        ...prevCart,
+                        items: updatedItems,
+                        totalPrice: updatedTotalPrice,
+                    };
+                });
+                alert(`${game.name} has been removed from your cart.`);
+            } else {
+                const errorData = await response.json();
+                alert(`Error removing from cart: ${errorData.error}`);
+            }
+        } catch (error) {
+            console.error('Error removing from cart:', error);
+            alert('Failed to remove item from cart.');
+        }
+    };
+
+
+    // Helper function to check if a game is in cart
+    const isGameInCart = (gameId) => {
+        return cartItems.some(item => item.gameId === gameId);
+    };
+
+    // Helper function to check if a game is in wishlist
+    const isInWishlist = (gameId) => {
+        return wishlistItems.some(item => item.gameId === gameId);
+    };
+
+
 
 
     return (
         <div className="user-profile">
             <UserCover profile={profile} />
             {/* <ProductView  /> */}
-            {/* <Wishlist itemGames={wishlistItems} games={games} /> */}
+            <Wishlist wishlistItems={wishlistItems} games={games} isInWishlist={isInWishlist}
+                isGameInCart={isGameInCart} />
         </div>
     );
 };
