@@ -33,7 +33,7 @@ const PurchaseTotal = ({
         <span className="amount">${total.toFixed(2)}</span>
       </div>
 
-      <button className="buy-now-button">Buy Now</button>
+      <button className="buy-now-button" onClick={createOrder}>Buy Now</button>
     </div>
   );
 };

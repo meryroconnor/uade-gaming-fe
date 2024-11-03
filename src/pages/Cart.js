@@ -17,12 +17,8 @@ const Cart = () => {
     const [cartItems, setCartItems] = useState([]);
 
 
-    const [cart, setCart] = useState({ items: [], totalPrice: 0 });
+    const [cart, setCart] = useState([]);
 
-    // Save cart to localStorage whenever it changes
-    useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cart));
-    }, [cart]);
 
     const fetchData = async () => {
         if (!user) {
@@ -31,28 +27,24 @@ const Cart = () => {
             setLoading(false);
             return;
         }
-    
+
         setLoading(true);
         try {
             const userId = user.user.id;
             const token = user.token;
-    
+
             // Fetch cart data
             const cartResponse = await axios.post(`http://127.0.0.1:3001/carts`, { userId }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setCart(cartResponse.data);
-    
+
             // Fetch game details
             const gamesResponse = await axios.get('http://127.0.0.1:3001/games/');
             setGames(gamesResponse.data);
-    
-            // Fetch wishlist items
-            const wishlistResponse = await axios.get(`http://127.0.0.1:3001/wishlists/items/all`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            setWishlistItems(wishlistResponse.data);
-    
+
+
+
             // Fetch cart items
             const cartItemsResponse = await fetch('http://127.0.0.1:3001/carts/items', {
                 method: 'GET',
@@ -61,16 +53,16 @@ const Cart = () => {
                     'Authorization': `Bearer ${token}`,
                 },
             });
-    
+
             // Check if the response is ok before processing
             if (!cartItemsResponse.ok) {
                 throw new Error('Failed to fetch cart items');
             }
-    
+
             // Parse the response to JSON
             const cartItemsData = await cartItemsResponse.json();
             setCartItems(cartItemsData);
-    
+
         } catch (err) {
             setError('Error fetching data');
             console.error(err);
@@ -78,13 +70,30 @@ const Cart = () => {
             setLoading(false);
         }
     };
-    
+
+    // Function to fetch wishlist items 
+    const wishlistResponse = async () => {
+        try {
+            const response = await axios.get(`http://127.0.0.1:3001/wishlists/items/all`, {
+                headers: { Authorization: `Bearer ${user.token}` },
+            });
+            setWishlistItems(response.data);
+        } catch (error) {
+            console.error("Error fetching wishlist items:", error);
+            throw error;
+        }
+    }
 
     // Fetch data on component mount
     useEffect(() => {
         fetchData();
     }, [user]);
 
+    // Ensure wishlistResponse fetches the latest items when `wishlistItems` changes
+    useEffect(() => {
+        wishlistResponse();
+        localStorage.setItem('cart', JSON.stringify(cart));
+    }, [user, wishlistItems]);
 
     // Function to create a new order
     const createOrder = async () => {
@@ -178,8 +187,6 @@ const Cart = () => {
                 },
             });
 
-            console.log(game.id);
-
             if (response.status === 204) {
                 alert(`${game.name} has been removed from your wishlist.`);
                 // Update wishlistItems state
@@ -195,6 +202,10 @@ const Cart = () => {
     // Helper function to check if a game is in cart
     const isGameInCart = (gameId) => {
         return cartItems.some(item => item.gameId === gameId);
+    };
+
+    const isInWishlist = (gameId) => {
+        return wishlistItems.some(item => item.gameId === gameId);
     };
 
 
@@ -222,7 +233,7 @@ const Cart = () => {
                                         onRemoveFromCart={removeFromCart}
                                         onAddToWishlist={addToWishlist}
                                         onRemoveFromWishlist={removeFromWishlist}
-                                        isFavorite={wishlistItems.includes(game.id)}
+                                        isFavorite={isInWishlist(game.id)}
                                     />
                                 </div>
                             ))}
