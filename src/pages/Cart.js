@@ -73,6 +73,11 @@ const Cart = () => {
 
     // Function to fetch wishlist items 
     const wishlistResponse = async () => {
+        if (!user) {
+            setWishlistItems([]);
+            setLoading(false);
+            return;
+        }
         try {
             const response = await axios.get(`http://127.0.0.1:3001/wishlists/items/all`, {
                 headers: { Authorization: `Bearer ${user.token}` },

@@ -12,7 +12,7 @@ const Wishlist = ({
   isInWishlist,
   isGameInCart,
   cartItems,
- }
+}
 ) => {
 
 
