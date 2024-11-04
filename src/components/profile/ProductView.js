@@ -25,8 +25,13 @@ const ProductView = ({
     <div className="product-view">
       {profile.userType === 'customer' ? (
         <>
+        {ordersGames.length === 0 ? (
+          <h2 className="highlights__title">No Purchases Yet</h2>
+        ) : (
           <h2 className="highlights__title">My Purchases</h2>
-        </>
+        )}
+      </>
+      
       ) : profile.userType === 'company' ? (
         <h2 className="highlights__title">My Products</h2>
       ) : null}
@@ -40,7 +45,7 @@ const ProductView = ({
               <GameChart
                 key={index} 
                 game={game}
-                variant='store'
+                variant='profile'
               />
             ))
         )}

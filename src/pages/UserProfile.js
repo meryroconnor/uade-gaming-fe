@@ -137,7 +137,9 @@ const UserProfile = () => {
 
     // Fetch orders on component mount
     useEffect(() => {
-        user.user.userType === 'customer' ? fetchUserOrdersGames() : fetchGamesForCompany();       
+        if (user) {
+            user.user.userType === 'customer' ? fetchUserOrdersGames() : fetchGamesForCompany();
+        }
     }, [user]);
 
     // Fetch data on component mount
@@ -243,8 +245,8 @@ const UserProfile = () => {
         <div className="user-profile">
             <UserCover profile={profile} />
             <ProductView profile={profile} ordersGames={ordersGames} games={games} companyGames={companyGames} />
-            {/* <Wishlist wishlistItems={wishlistItems} games={games} isInWishlist={isInWishlist}
-                isGameInCart={isGameInCart} addToCart={addToCart} removeFromCart={removeFromCart} cartItems={cartItems}/> */}
+            <Wishlist wishlistItems={wishlistItems} games={games} isInWishlist={isInWishlist}
+                isGameInCart={isGameInCart} addToCart={addToCart} removeFromCart={removeFromCart} cartItems={cartItems} />
         </div>
     );
 };
