@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import Game from '../components/Game';
-import { useFetch } from '../useFetch';
 import { useUser } from '../userContext';
-
 import ProductView from '../components/profile/ProductView';
 import UserCover from '../components/profile/UserCover';
 import Wishlist from '../components/profile/Wishlist';
 import axios from 'axios';
-
 
 const UserProfile = () => {
     const { user } = useUser();
@@ -16,34 +12,30 @@ const UserProfile = () => {
     const [cartItems, setCartItems] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [cart, setCart] = useState([]);
+    const [cart, setCart] = useState({ items: [], totalPrice: 0 });
     const [profile, setProfile] = useState([]);
     const [ordersGames, setOrdersGames] = useState([]);
     const [companyGames, setCompanyGames] = useState([]);
 
-
     const fetchData = async () => {
         if (!user) {
-            setCart({ items: [], totalPrice: 0 }); // Reset the cart to empty
             localStorage.removeItem('cart');
             setLoading(false);
             return;
         }
 
         setLoading(true);
-        try {
-            const userId = user.user.id;
-            const token = user.token;
+        const token = user.token;
 
-            // Fetch user data
-            const userResponse = await axios.get(`http://127.0.0.1:3001/profile`, {
+        try {
+            // Fetch profile data
+            const userResponse = await axios.get('http://127.0.0.1:3001/profile', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setProfile(userResponse.data);
 
-
             // Fetch cart data
-            const cartResponse = await axios.post(`http://127.0.0.1:3001/carts`, { userId }, {
+            const cartResponse = await axios.post('http://127.0.0.1:3001/carts', { userId: user.user.id }, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             setCart(cartResponse.data);
@@ -53,28 +45,31 @@ const UserProfile = () => {
             setGames(gamesResponse.data);
 
 
-
             // Fetch cart items
-            const cartItemsResponse = await fetch('http://127.0.0.1:3001/carts/items', {
-                method: 'GET',
+            const cartItemsResponse = await axios.get('http://127.0.0.1:3001/carts/items', {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
             });
+            setCartItems(cartItemsResponse.data);
 
-            // Check if the response is ok before processing
-            if (!cartItemsResponse.ok) {
-                throw new Error('Failed to fetch cart items');
+            // Fetch user orders or company games based on user type
+            if (user.user.userType === 'customer') {
+                const ordersResponse = await axios.get('http://127.0.0.1:3001/orders', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setOrdersGames(ordersResponse.data);
+            } else {
+                const companyGamesResponse = await axios.get('http://127.0.0.1:3001/companies/games', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setCompanyGames(companyGamesResponse.data);
             }
 
-            // Parse the response to JSON
-            const cartItemsData = await cartItemsResponse.json();
-            setCartItems(cartItemsData);
-
         } catch (err) {
-            setError('Error fetching data');
-            console.error(err);
+            setError('Error fetching data. Please try again later.'); // Set error message
+            console.error(err); // Log the error for debugging
         } finally {
             setLoading(false);
         }
@@ -82,7 +77,9 @@ const UserProfile = () => {
 
     // Function to fetch wishlist items 
     const wishlistResponse = async () => {
+        setWishlistItems([])
         if (!user) {
+            setWishlistItems([]);
             setLoading(false);
             return;
         }
@@ -93,67 +90,24 @@ const UserProfile = () => {
             setWishlistItems(response.data);
         } catch (error) {
             console.error("Error fetching wishlist items:", error);
-            throw error;
         }
     }
 
-    // Function to fetch all the user's orders
-    const fetchUserOrdersGames = async () => {
-        if (!user) {
-            setLoading(false);
-            return;
-        }
 
-        setLoading(true);
-        try {
-            const response = await axios.get(`http://127.0.0.1:3001/orders`, {
-                headers: { Authorization: `Bearer ${user.token}` }
-            });
-            setOrdersGames(response.data);
-        } catch (error) {
-            console.error("Error fetching user orders:", error);
-            setError("Failed to fetch user orders.");
-        } finally {
-            setLoading(false);
-        }
-
-    };
-
-    // Function to fetch games for a specific company
-    const fetchGamesForCompany = async () => {
-        setLoading(true);
-        try {
-            const response = await axios.get(`http://127.0.0.1:3001/companies/games`, {
-                headers: { Authorization: `Bearer ${user.token}` },
-            });
-            setCompanyGames(response.data);
-        } catch (err) {
-            setError('Error fetching company games');
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    // Fetch orders on component mount
-    useEffect(() => {
-        if (user) {
-            user.user.userType === 'customer' ? fetchUserOrdersGames() : fetchGamesForCompany();
-        }
-    }, [user]);
-
-    // Fetch data on component mount
     useEffect(() => {
         fetchData();
-        localStorage.setItem('cart', JSON.stringify(cart));
     }, [user]);
 
     // Ensure wishlistResponse fetches the latest items when `wishlistItems` changes
     useEffect(() => {
         wishlistResponse();
-        localStorage.setItem('wishlistItems', JSON.stringify(wishlistItems));
+        localStorage.setItem('cart', JSON.stringify(cart));
     }, [user]);
 
+    useEffect(() => {
+        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('wishlistItems', JSON.stringify(wishlistItems));
+    }, [cart, wishlistItems]);
 
     const addToCart = async (game) => {
         try {
@@ -228,25 +182,26 @@ const UserProfile = () => {
     };
 
 
-    // Helper function to check if a game is in cart
     const isGameInCart = (gameId) => {
         return cartItems.some(item => item.gameId === gameId);
     };
 
-    // Helper function to check if a game is in wishlist
     const isInWishlist = (gameId) => {
         return wishlistItems.some(item => item.gameId === gameId);
     };
 
-
-
-
     return (
         <div className="user-profile">
-            <UserCover profile={profile} />
-            <ProductView profile={profile} ordersGames={ordersGames} games={games} companyGames={companyGames} />
-            <Wishlist wishlistItems={wishlistItems} games={games} isInWishlist={isInWishlist}
-                isGameInCart={isGameInCart} addToCart={addToCart} removeFromCart={removeFromCart} cartItems={cartItems} />
+            {loading && <div>Loading...</div>}
+            {error && <div className="error-message">{error}</div>} {/* Display error message */}
+            {!loading && !error && ( // Only render profile if there's no loading or error
+                <>
+                    <UserCover profile={profile} />
+                    <ProductView profile={profile} ordersGames={ordersGames} games={games} companyGames={companyGames} />
+                    <Wishlist wishlistItems={wishlistItems} games={games} isInWishlist={isInWishlist}
+                        isGameInCart={isGameInCart} addToCart={addToCart} removeFromCart={removeFromCart} cartItems={cartItems} />
+                </>
+            )}
         </div>
     );
 };

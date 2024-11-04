@@ -147,10 +147,11 @@ const GamesList = () => {
 
 
     // Helper function to check if a game is in cart
-const isGameInCart = (gameId) => {
-    if (cart.items.length === 0) return false;
-    return cart.items.some(item => item.gameId === gameId);
-};
+    const isGameInCart = (gameId) => {
+        console.log(cart.items);
+        if (cart.items.length === 0) return false;
+        return cart.items.some(item => item.gameId === gameId);
+    };
 
 
     if (loading) return <p>Loading...</p>;

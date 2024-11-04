@@ -21,6 +21,7 @@ const Cart = () => {
 
 
     const fetchData = async () => {
+        setCart([]);
         if (!user) {
             setCart({ items: [], totalPrice: 0 }); // Reset the cart to empty
             localStorage.removeItem('cart');
@@ -73,20 +74,20 @@ const Cart = () => {
 
     // Function to fetch wishlist items 
     const wishlistResponse = async () => {
+        setWishlistItems([])
         if (!user) {
             setWishlistItems([]);
             setLoading(false);
             return;
         }
         try {
-            const response = await axios.get(`http://127.0.0.1:3001/wishlists/items/all`, {
+           const response = await axios.get(`http://127.0.0.1:3001/wishlists/items/all`, {
                 headers: { Authorization: `Bearer ${user.token}` },
             });
             setWishlistItems(response.data);
         } catch (error) {
-            console.error("Error fetching wishlist items:", error);
-            throw error;
-        }
+            console.error("Error fetching wishlist items:", error);          
+        }        
     }
 
     // Fetch data on component mount
@@ -98,7 +99,7 @@ const Cart = () => {
     useEffect(() => {
         wishlistResponse();
         localStorage.setItem('cart', JSON.stringify(cart));
-    }, [user, wishlistItems]);
+    }, [user]);
 
     // Function to create a new order
     const createOrder = async () => {
