@@ -2,43 +2,27 @@ import React, { useState, useEffect } from 'react';
 import FilterMenu from '../components/FilterMenu';
 import Game from '../components/Game';
 import GameSearch from '../components/GameSearch';
-import { useFetch } from '../useFetch';
-import Navbar from '../components/Navbar';
-import './Catalog.css';
+import { gameService } from '../services/gameService';
 import { useUser } from '../userContext';
+import './Catalog.css';
 
 const GamesList = () => {
     const { user } = useUser();
     const [games, setGames] = useState([]);
     const [filteredGames, setFilteredGames] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [cart, setCart] = useState(() => {
-        // Load cart from localStorage if it exists
         const savedCart = localStorage.getItem('cart');
         return savedCart ? JSON.parse(savedCart) : [];
     });
-
-    const { data, loading, error } = useFetch('http://127.0.0.1:3000/games/');
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 4;
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = filteredGames.slice(indexOfFirstItem, indexOfLastItem);
-
-    const nextPage = () => {
-        setCurrentPage((prevPage) => prevPage + 1);
-    };
-
-    const prevPage = () => {
-        if (currentPage > 1) {
-            setCurrentPage((prevPage) => prevPage - 1);
-        }
-    };
-
-    // State for filters
+    // Filter states
     const [genre, setGenre] = useState('');
     const [os, setOs] = useState([]);
     const [language, setLanguage] = useState('');
@@ -47,12 +31,23 @@ const GamesList = () => {
     const [playerMode, setPlayerMode] = useState('');
     const [rating, setRating] = useState('');
 
+    // Fetch games
     useEffect(() => {
-        if (data) {
-            setGames(data);
-        }
-    }, [data]);
+        const fetchGames = async () => {
+            try {
+                const data = await gameService.getAllGames();
+                setGames(data);
+                setFilteredGames(data); // Initialize filtered games with all games
+                setLoading(false);
+            } catch (err) {
+                setError(err.message);
+                setLoading(false);
+            }
+        };
+        fetchGames();
+    }, []);
 
+    // Apply filters
     useEffect(() => {
         const filtered = games.filter(game => {
             return (
@@ -67,108 +62,55 @@ const GamesList = () => {
             );
         });
         setFilteredGames(filtered);
+        setCurrentPage(1); // Reset to first page when filters change
     }, [games, genre, os, language, priceFrom, priceTo, playerMode, rating, searchQuery]);
 
-    // // Fetch the cart
-    // useEffect(() => {
-    //     const fetchCart = async () => {
-    //         if (user && user.token) { // Only fetch if user is logged in
-    //             try {
-    //                 const response = await fetch(`http://127.0.0.1:3000/carts/user/${user.user.id}`, {
-    //                     headers: {
-    //                         'Authorization': `Bearer ${user.token}`,
-    //                     }
-    //                 });
-    //                 if (response.ok) {
-    //                     const cartData = await response.json();
-    //                     setCart(cartData.cartId ? { cartId: cartData.cartId } : {});
-    //                 } else {
-    //                     const errorData = await response.json();
-    //                     alert(`Error fetching cart: ${errorData.error}`);
-    //                 }
-    //             } catch (error) {
-    //                 console.error('Error fetching cart:', error);
-    //                 alert('Failed to fetch cart.');
-    //             }
-    //         }
-    //     };
-    //     console.log(cart)
-    //     fetchCart();
-    // }, [user]);
+    // Pagination calculations
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredGames.slice(indexOfFirstItem, indexOfLastItem);
 
-    // Save cart to localStorage whenever it changes
-    
+    const nextPage = () => {
+        setCurrentPage((prevPage) => prevPage + 1);
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage((prevPage) => prevPage - 1);
+        }
+    };
+
+    // Cart operations
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
 
-
     const addToCart = async (game) => {
         try {
-            const response = await fetch('http://127.0.0.1:3000/carts/items', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${user.token}`,
-
-                },
-                body: JSON.stringify({
-                    gameId: game.id,
-                    quantity: 1
-                }),
-            });
-
-
-
-            if (response.ok) {
-                const cartItem = await response.json();
-                setCart((prevCart) => [...prevCart, cartItem]);
-                alert(`${game.name} has been added to your cart!`);
-            } else {
-                const errorData = await response.json();
-                alert(`Error adding to cart: ${errorData.error}`);
-            }
+            const cartItem = await gameService.addToCart(game.id, 1);
+            setCart((prevCart) => [...prevCart, cartItem]);
+            alert(`${game.name} has been added to your cart!`);
         } catch (error) {
-            console.error('Error adding to cart:', error);
             alert('Failed to add item to cart.');
         }
     };
 
     const removeFromCart = async (game) => {
         try {
-            const response = await fetch(`http://127.0.0.1:3000/carts/${cart.id}/items`, {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${user.token}`,
-                },
-                body: JSON.stringify({
-                    // cartId: cart.id,
-                    gameId: game.id,
-                }),
-            });
-
-            if (response.ok) {
-                setCart((prevCart) => prevCart.filter(item => item.gameId !== game.id));
-                alert(`${game.name} has been removed from your cart.`);
-            } else {
-                const errorData = await response.json();
-                alert(`Error removing from cart: ${errorData.error}`);
-            }
+            await gameService.removeFromCart(cart.id, game.id);
+            setCart((prevCart) => prevCart.filter(item => item.gameId !== game.id));
+            alert(`${game.name} has been removed from your cart.`);
         } catch (error) {
-            console.error('Error removing from cart:', error);
             alert('Failed to remove item from cart.');
         }
     };
 
-    // Helper function to check if game is in cart
     const isGameInCart = (gameId) => {
         return cart.some(item => item.gameId === gameId);
     };
 
-
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    if (error) return <p>Error: {error}</p>;
 
     return (
         <div className='catalog-body'>
@@ -178,7 +120,6 @@ const GamesList = () => {
             </div>
 
             <div className="catalog-grid-container">
-                {/* Sidebar */}
                 <aside className="catalog-sidebar">
                     <FilterMenu
                         genre={genre}
@@ -198,7 +139,6 @@ const GamesList = () => {
                     />
                 </aside>
 
-                {/* Game Catalog */}
                 <section className="catalog-grid">
                     <div className="catalog-game-cards">
                         {currentItems.map(game => (
@@ -209,20 +149,20 @@ const GamesList = () => {
                                     variant="catalog"
                                     onAddToCart={addToCart}
                                     onRemoveFromCart={removeFromCart}
-                                    isInCart={isGameInCart(game.id)} />
+                                    isInCart={isGameInCart(game.id)} 
+                                />
                             </div>
                         ))}
                     </div>
                 </section>
             </div>
 
-            {/* Pagination Buttons */}
             <div className="pagination">
                 <button className='arrowButton' onClick={prevPage} disabled={currentPage === 1}>
                     ←
                 </button>
-
-                <button className='arrowButton'
+                <button 
+                    className='arrowButton'
                     onClick={nextPage}
                     disabled={indexOfLastItem >= filteredGames.length}
                 >

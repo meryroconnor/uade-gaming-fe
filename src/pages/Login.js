@@ -2,46 +2,36 @@ import React, { useState } from 'react';
 import './Login.css';
 import LoginImage from '../images/LoginImage.png';
 import { useUser } from '../userContext';
+import { authService } from '../services/authService';
 
 const LoginComponent = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const { login } = useUser();
 
     if (!isOpen) return null;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const loginData = {
-            email,
-            password          
-        };
-
-
-        const apiUrl = 'http://127.0.0.1:3000/users/login';
+        setIsLoading(true);
+        setErrorMessage('');
 
         try {
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(loginData),
-            });
-
-            if (!response.ok) {
-                throw new Error('Login failed');
-            }
-
-            const data = await response.json();
+            const data = await authService.login(email, password);
             console.log('Login successful:', data);
-
+            
             login(data); // Update user context with the response data
             onClose(); // Close the login modal
+            
+            // Reset form
+            setEmail('');
+            setPassword('');
         } catch (error) {
             setErrorMessage(error.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -57,12 +47,18 @@ const LoginComponent = ({ isOpen, onClose }) => {
                     />
                 </div>
                 <div className="formContainer">
-                    <button className="close-btn" onClick={onClose}>×</button>
+                    <button 
+                        className="close-btn" 
+                        onClick={onClose}
+                        disabled={isLoading}
+                    >×</button>
 
                     <h2 className="title">Welcome Back!</h2>
                     <p className="subtitle">Find awesome games<br />Explore new dimensions</p>
 
-                    {errorMessage && <p className="error">{errorMessage}</p>}
+                    {errorMessage && (
+                        <p className="error" role="alert">{errorMessage}</p>
+                    )}
 
                     <form className="form" onSubmit={handleSubmit}>
                         <input
@@ -72,6 +68,7 @@ const LoginComponent = ({ isOpen, onClose }) => {
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            disabled={isLoading}
                         />
                         <input
                             type="password"
@@ -80,9 +77,16 @@ const LoginComponent = ({ isOpen, onClose }) => {
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            disabled={isLoading}
                         />
 
-                        <button type="submit" className="loginButton">Log in</button>
+                        <button 
+                            type="submit" 
+                            className="loginButton"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'Logging in...' : 'Log in'}
+                        </button>
                     </form>
                     <div className="footer">
                         <a href="/forgot-password" className="link">Forgot Password</a>

@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import './Register.css';
+import { authService } from '../services/authService';
 
-const RegistrationComponent = ({ isOpen, onClose }) => {
+
+const Register = ({ isOpen, onClose }) => {
   // State for form inputs
   const [activeForm, setActiveForm] = useState('user');
   const [userData, setUserData] = useState({
@@ -170,4 +172,4 @@ const RegistrationComponent = ({ isOpen, onClose }) => {
   );
 };
 
-export default RegistrationComponent;
+export default Register;

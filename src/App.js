@@ -24,6 +24,7 @@ function App() {
 
   const loginModal = useModal();
   const registerModal = useModal();
+  
 
   return (
     <UserProvider>
