@@ -22,10 +22,11 @@ const Navbar = ({ openLoginModal, openRegisterModal }) => {
               Home
             </Link>
           </li>
+          
           <li><Link to="/catalog">Catalog</Link></li>
-          {user?.userType === 'company' && <li><Link to="/my-sales">My sales</Link></li>}
-          {user?.userType === 'customer' && <li><Link to="/purchases">Purchases</Link></li>}
-          {user?.userType === 'customer' && <li><Link to="/wishlist">Wishlist</Link></li>}
+          {user?.user.userType === 'company' && <li><Link to="/profile">My sales</Link></li>}
+          {user?.user.userType === 'customer' && <li><Link to="/profile">Purchases</Link></li>}
+          {user?.user.userType === 'customer' && <li><Link to="/profile">Wishlist</Link></li>}
         </ul>
         <div className="navbar-cart">
           <Link to="/cart">

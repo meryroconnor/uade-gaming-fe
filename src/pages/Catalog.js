@@ -12,13 +12,9 @@ const GamesList = () => {
     const [games, setGames] = useState([]);
     const [filteredGames, setFilteredGames] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const [cart, setCart] = useState(() => {
-        // Load cart from localStorage if it exists
-        const savedCart = localStorage.getItem('cart');
-        return savedCart ? JSON.parse(savedCart) : [];
-    });
+    const [cart, setCart] = useState({ items: [], totalPrice: 0 });
 
-    const { data, loading, error } = useFetch('http://127.0.0.1:3000/games/');
+    const { data, loading, error } = useFetch('http://127.0.0.1:3001/games/');
 
     // Pagination
     const [currentPage, setCurrentPage] = useState(1);
@@ -69,35 +65,7 @@ const GamesList = () => {
         setFilteredGames(filtered);
     }, [games, genre, os, language, priceFrom, priceTo, playerMode, rating, searchQuery]);
 
-    // // Fetch the cart
-    // useEffect(() => {
-    //     const fetchCart = async () => {
-    //         if (user && user.token) { // Only fetch if user is logged in
-    //             try {
-    //                 const response = await fetch(`http://127.0.0.1:3000/carts/user/${user.user.id}`, {
-    //                     headers: {
-    //                         'Authorization': `Bearer ${user.token}`,
-    //                     }
-    //                 });
-    //                 if (response.ok) {
-    //                     const cartData = await response.json();
-    //                     setCart(cartData.cartId ? { cartId: cartData.cartId } : {});
-    //                 } else {
-    //                     const errorData = await response.json();
-    //                     alert(`Error fetching cart: ${errorData.error}`);
-    //                 }
-    //             } catch (error) {
-    //                 console.error('Error fetching cart:', error);
-    //                 alert('Failed to fetch cart.');
-    //             }
-    //         }
-    //     };
-    //     console.log(cart)
-    //     fetchCart();
-    // }, [user]);
 
-    // Save cart to localStorage whenever it changes
-    
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
@@ -105,24 +73,30 @@ const GamesList = () => {
 
     const addToCart = async (game) => {
         try {
-            const response = await fetch('http://127.0.0.1:3000/carts/items', {
+            const response = await fetch('http://127.0.0.1:3001/carts/items', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${user.token}`,
-
                 },
                 body: JSON.stringify({
                     gameId: game.id,
-                    quantity: 1
+                    quantity: 1,
                 }),
             });
 
-
-
             if (response.ok) {
                 const cartItem = await response.json();
-                setCart((prevCart) => [...prevCart, cartItem]);
+                setCart((prevCart) => {
+                    const updatedItems = [...prevCart.items, cartItem];
+                    const updatedTotalPrice = updatedItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+                    return {
+                        ...prevCart,
+                        items: updatedItems,
+                        totalPrice: updatedTotalPrice,
+                    };
+                });
                 alert(`${game.name} has been added to your cart!`);
             } else {
                 const errorData = await response.json();
@@ -136,20 +110,28 @@ const GamesList = () => {
 
     const removeFromCart = async (game) => {
         try {
-            const response = await fetch(`http://127.0.0.1:3000/carts/${cart.id}/items`, {
+            const response = await fetch(`http://127.0.0.1:3001/carts/${cart.id}/items`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${user.token}`,
                 },
                 body: JSON.stringify({
-                    // cartId: cart.id,
                     gameId: game.id,
                 }),
             });
 
             if (response.ok) {
-                setCart((prevCart) => prevCart.filter(item => item.gameId !== game.id));
+                setCart((prevCart) => {
+                    const updatedItems = prevCart.items.filter(item => item.gameId !== game.id);
+                    const updatedTotalPrice = updatedItems.reduce((total, item) => total + item.price * item.quantity, 0);
+
+                    return {
+                        ...prevCart,
+                        items: updatedItems,
+                        totalPrice: updatedTotalPrice,
+                    };
+                });
                 alert(`${game.name} has been removed from your cart.`);
             } else {
                 const errorData = await response.json();
@@ -161,9 +143,14 @@ const GamesList = () => {
         }
     };
 
-    // Helper function to check if game is in cart
+
+
+
+    // Helper function to check if a game is in cart
     const isGameInCart = (gameId) => {
-        return cart.some(item => item.gameId === gameId);
+        console.log(cart.items);
+        if (cart.items.length === 0) return false;
+        return cart.items.some(item => item.gameId === gameId);
     };
 
 

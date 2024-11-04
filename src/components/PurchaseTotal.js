@@ -1,13 +1,20 @@
 import React from 'react';
-import './PurchaseTotal.css'; 
+import './PurchaseTotal.css';
 
-const PurchaseTotal = ({ productCount = 4, productTotal = 80.00, discount = 0.00 }) => {
+const PurchaseTotal = ({
+  productCount,
+  productTotal,
+  discount = 0.00,
+  createOrder,
+  cart,
+  cartItems
+}) => {
   const total = productTotal - discount;
 
   return (
     <div className="purchase-total-card">
       <h4>PURCHASE TOTAL</h4>
-      
+
       <div className="details">
         <div className="detail-item">
           <span>Products ({productCount})</span>
@@ -26,7 +33,7 @@ const PurchaseTotal = ({ productCount = 4, productTotal = 80.00, discount = 0.00
         <span className="amount">${total.toFixed(2)}</span>
       </div>
 
-      <button className="buy-now-button">Buy Now</button>
+      <button className="buy-now-button" onClick={createOrder}>Buy Now</button>
     </div>
   );
 };

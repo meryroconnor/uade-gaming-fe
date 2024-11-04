@@ -69,6 +69,10 @@
   .title {
     font-size: 3rem;
     margin-bottom: 0.5rem;
+    text-align: left;
+    background-color: lime ;
+    color: #1a202c;
+    width: fit-content;
   }
   
   .description {

@@ -1,7 +1,10 @@
 import React from 'react';
 import './GameCardSm.css';
 
-const GameCardSm = ({ title, image, price, rating }) => {
+
+const GameCardSm = ({ title, image, price, rating,
+  onAddToCart, onRemoveFromCart, isInCart, game }) => {
+
   return (
     <div className="game-card-sm">
       <div className="game-card-sm__image-container">
@@ -13,8 +16,14 @@ const GameCardSm = ({ title, image, price, rating }) => {
           <div className="game-card-sm__price-rating">
             <span className="game-card-sm__price">${price.toFixed(2)}</span>
             <span className="game-card-sm__rating">/ {rating}</span>
-          </div>
-          <button className="game-card-sm__cart-button">+ Cart</button>
+          </div>         
+          <button 
+          className="game-card-sm__cart-button" 
+          onClick={() => isInCart ? onRemoveFromCart(game) : onAddToCart(game)}
+          
+        >
+          {isInCart ? "Remove" : "Add"}
+        </button>
         </div>
       </div>
     </div>

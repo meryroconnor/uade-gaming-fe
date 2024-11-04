@@ -20,7 +20,7 @@ const LoginComponent = ({ isOpen, onClose }) => {
         };
 
 
-        const apiUrl = 'http://127.0.0.1:3000/users/login';
+        const apiUrl = 'http://127.0.0.1:3001/users/login';
 
         try {
             const response = await fetch(apiUrl, {
@@ -38,7 +38,8 @@ const LoginComponent = ({ isOpen, onClose }) => {
             const data = await response.json();
             console.log('Login successful:', data);
 
-            login(data); // Update user context with the response data
+            login(data);
+            console.log(data) // Update user context with the response data
             onClose(); // Close the login modal
         } catch (error) {
             setErrorMessage(error.message);
