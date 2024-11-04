@@ -6,11 +6,13 @@ import './Wishlist.css';
 
 const Wishlist = ({
   games,
-  wishlistItems,
-  onAddToCart,
-  onRemoveFromCart,
+  cart,
+  addToCart,
+  removeFromCart,
   isInWishlist,
-  isGameInCart }
+  isGameInCart,
+  cartItems,
+ }
 ) => {
 
 
@@ -24,11 +26,15 @@ const Wishlist = ({
           .filter(game => isInWishlist(game.id))
           .map(game => (
             <GameCardSm
+              game={game}
               key={game.id}
               title={game.title}
               image={game.image}
               price={game.price}
               rating={game.rating}
+              onAddToCart={addToCart}
+              onRemoveFromCart={removeFromCart}
+              isInCart={isGameInCart(game.id)}
             />
           ))}
       </div>

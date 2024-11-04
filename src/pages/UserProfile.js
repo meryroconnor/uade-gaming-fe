@@ -18,6 +18,8 @@ const UserProfile = () => {
     const [error, setError] = useState(null);
     const [cart, setCart] = useState([]);
     const [profile, setProfile] = useState([]);
+    const [ordersGames, setOrdersGames] = useState([]);
+    const [companyGames, setCompanyGames] = useState([]);
 
 
     const fetchData = async () => {
@@ -47,7 +49,7 @@ const UserProfile = () => {
             setCart(cartResponse.data);
 
             // Fetch game details
-            const gamesResponse = await axios.get('http://127.0.0.1:3001/games/');            
+            const gamesResponse = await axios.get('http://127.0.0.1:3001/games/');
             setGames(gamesResponse.data);
 
 
@@ -84,13 +86,55 @@ const UserProfile = () => {
             const response = await axios.get(`http://127.0.0.1:3001/wishlists/items/all`, {
                 headers: { Authorization: `Bearer ${user.token}` },
             });
-            console.log(response.data);
             setWishlistItems(response.data);
         } catch (error) {
             console.error("Error fetching wishlist items:", error);
             throw error;
         }
     }
+
+    // Function to fetch all the user's orders
+    const fetchUserOrdersGames = async () => {
+        if (!user) {
+            setLoading(false);
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const response = await axios.get(`http://127.0.0.1:3001/orders`, {
+                headers: { Authorization: `Bearer ${user.token}` }
+            });
+            setOrdersGames(response.data);
+        } catch (error) {
+            console.error("Error fetching user orders:", error);
+            setError("Failed to fetch user orders.");
+        } finally {
+            setLoading(false);
+        }
+
+    };
+
+    // Function to fetch games for a specific company
+    const fetchGamesForCompany = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get(`http://127.0.0.1:3001/companies/games`, {
+                headers: { Authorization: `Bearer ${user.token}` },
+            });
+            setCompanyGames(response.data);
+        } catch (err) {
+            setError('Error fetching company games');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Fetch orders on component mount
+    useEffect(() => {
+        user.user.userType === 'customer' ? fetchUserOrdersGames() : fetchGamesForCompany();       
+    }, [user]);
 
     // Fetch data on component mount
     useEffect(() => {
@@ -194,9 +238,9 @@ const UserProfile = () => {
     return (
         <div className="user-profile">
             <UserCover profile={profile} />
-            {/* <ProductView  /> */}
-            <Wishlist wishlistItems={wishlistItems} games={games} isInWishlist={isInWishlist}
-                isGameInCart={isGameInCart} />
+            <ProductView profile={profile} ordersGames={ordersGames} games={games} companyGames={companyGames} />
+            {/* <Wishlist wishlistItems={wishlistItems} games={games} isInWishlist={isInWishlist}
+                isGameInCart={isGameInCart} addToCart={addToCart} removeFromCart={removeFromCart} cartItems={cartItems}/> */}
         </div>
     );
 };

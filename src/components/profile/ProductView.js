@@ -2,39 +2,61 @@ import React from 'react';
 import GameChart from '../Game';
 import './ProductView.css';
 
-// Import images
-import doomEternalImg from '../../images/games/zelda.jpg';
+
+const ProductView = ({
+  profile,
+  ordersGames,
+  games,
+  companyGames
+}) => {
 
 
-const ProductView = () => {
-  const games = [
-    {
-        image: doomEternalImg,
-        name: "Game Name",
-        releaseDate: "2024",
-        developer: "Developer Name",
-        rating: 4,
-        price: 29.99,
-        os: {
-          isApple: true,
-          isMicrosoft: true,
-          isLinux: false
-        }
-      }
-  ];
+  // Helper function to check if a game is in orderGames
+  const isInGameOrders = (gameId) => {
+    return ordersGames.includes(gameId);
+  };
+
+   // Helper function to check if a game is in companyGames
+   const isInGameCompany = (gameId) => {
+    return companyGames.includes(gameId);
+  };
 
   return (
     <div className="product-view">
-      <h2 className="highlights__title">My Products</h2>
+      {profile.userType === 'customer' ? (
+        <>
+          <h2 className="highlights__title">My Purchases</h2>
+        </>
+      ) : profile.userType === 'company' ? (
+        <h2 className="highlights__title">My Products</h2>
+      ) : null}
 
 
       <div className="highlights__products_view">
-        {games.map(game => (
-          <GameChart
-            game={game}
-            variant='store'
-          />
-        ))}
+        {profile.userType === 'customer' && (
+          games
+            .filter(game => isInGameOrders(game.id)) 
+            .map((game, index) => (
+              <GameChart
+                key={index} 
+                game={game}
+                variant='store'
+              />
+            ))
+        )}
+        {profile.userType === 'company' && (
+          games
+            .filter(game => isInGameCompany(game.id)) 
+            .map((game, index) => (
+              <GameChart
+                key={index} 
+                game={game}
+                variant='store'
+              />
+            ))
+        )}
+
+        
       </div>
     </div>
   );

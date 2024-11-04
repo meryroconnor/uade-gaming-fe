@@ -8,25 +8,25 @@ import './Game.css';
 
 const GameChart = ({ 
   game, 
-  variant , 
+  variant, 
   onSettingsClick,
   isFavorite,
   onAddToCart,
   onRemoveFromCart,
   isInCart,
-  onAddToWishlist ,
+  onAddToWishlist,
   onRemoveFromWishlist,
-  
-
 }) => {
-  const date = new Date(game.createdAt).toISOString().split('T')[0];
+  const dateStr = game.createdAt;
+  const date = new Date(dateStr);
+  const formattedDate = isNaN(date.getTime()) ? 'Invalid date' : date.toISOString().split('T')[0];
+
   const renderButtons = () => {
     if (variant === 'catalog') {
       return (
         <button 
           className="button" 
           onClick={() => isInCart ? onRemoveFromCart(game) : onAddToCart(game)}
-          
         >
           {isInCart ? "Remove" : "Add"} <BsCart4 className="icon-right" />
         </button>
@@ -47,9 +47,9 @@ const GameChart = ({
       return (
         <div className="button-group">
           <button 
-          className="button" 
-          onClick={() => onRemoveFromCart(game)}          
-        >
+            className="button" 
+            onClick={() => onRemoveFromCart(game)}          
+          >
             Remove <BsCart4 className="icon-right" />
           </button>
           <button 
@@ -63,7 +63,6 @@ const GameChart = ({
       );
     }
   };
-  
 
   return (
     <div className={`game-container ${variant === 'store' ? 'store-variant' : ''}`}>
@@ -88,7 +87,7 @@ const GameChart = ({
       <div className="details-container">
         <h2 className="game-title">{game.name}</h2>
         <p className="release-info">
-          {date} / {game.developer?.name}
+          {formattedDate} / {game.developer?.name}
         </p>
         
         <div className="rating-container">
@@ -118,4 +117,5 @@ const GameChart = ({
 };
 
 export default GameChart;
+
 
